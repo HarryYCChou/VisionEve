@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.12)
 project(bilt)
 
 # Define the source files
-set(SOURCE_SERVER src/server.cc)
+set(SOURCE_SERVER src/main.cc src/server.cc)
 set(SOURCE_CLIENT src/client.cc)
 
 # Find the required libraries
@@ -23,6 +23,8 @@ target_link_libraries(server PRIVATE glfw)
 target_link_libraries(server PRIVATE OpenGL::GL)
 # Link ImGui to the executable
 target_link_libraries(server PRIVATE imgui)
+# add header folder
+target_include_directories(server PRIVATE ${CMAKE_SOURCE_DIR}/include)
 # add ImGui header folder
 target_include_directories(server PRIVATE ${CMAKE_SOURCE_DIR}/lib/imgui)
 
