@@ -4,6 +4,7 @@ GLFWwindow* window;
 const char* glsl_version = "#version 130";
 ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 bool show_demo_window = true;
+bool exit_requested = false;
 
 // glfw error callback
 static void glfw_error_callback(int error, const char* description)
@@ -51,7 +52,6 @@ int imgui_initialize() {
 
   // Setup Dear ImGui style
   ImGui::StyleColorsDark();
-  //ImGui::StyleColorsLight();
 
   // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
   ImGuiStyle& style = ImGui::GetStyle();
@@ -87,6 +87,12 @@ void main_UI_render() {
     ImGui::SetNextWindowSize(ImVec2(400, 300));
     ImGui::Begin("VisionEve Server");
     ImGui::Text("This is a test sentence");
+
+    // exit button    
+    if (ImGui::Button("Exit")) {
+      exit_requested = true;
+    }
+    
     ImGui::End();
 }
 
@@ -139,6 +145,10 @@ int main() {
     }
 
     glfwSwapBuffers(window);
+
+    // check exit request
+    if (exit_requested)
+      break;
   }
 
   // cleanup
