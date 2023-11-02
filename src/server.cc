@@ -26,6 +26,16 @@ Server::Server() : isRunning(false) {
       exit(1);
   }
 
+  // set the server socket to non-blocking mode
+  int flags = fcntl(m_server_socket, F_GETFL, 0);
+  if (flags == -1) {
+      std::cerr << "fcntl F_GETFL failed." << std::endl;
+      close(m_server_socket);
+  }
+  if (fcntl(m_server_socket, F_SETFL, flags | O_NONBLOCK) == -1) {
+      std::cerr << "fcntl F_SETFL failed." << std::endl;
+      close(m_server_socket);
+  }
 }
 
 Server::~Server() {
@@ -50,6 +60,81 @@ void Server::stop() {
 }
 
 void Server::workerThread() {
+  // set client socket to -1
+  m_client_socket = -1;
+  while(isRunning.load()) {
+    // set timeout
+    struct timeval timeout;
+    timeout.tv_sec = 3;
+    timeout.tv_usec = 0;
+
+    fd_set readfds;
+    FD_ZERO(&readfds);
+    FD_SET(m_server_socket, &readfds);
+
+
+    std::cout << "Select.." << std::endl;
+    // Wait for an event on the server socket
+    int ret = select(m_server_socket + 1, &readfds, NULL, NULL, &timeout);
+    if (ret < 0) {
+        std::cerr << "Select failed." << std::endl;
+        break;
+    } else if ( ret == 0 ) {
+      // timeout
+      std::cout << "Timeout..." << std::endl;
+    }
+
+    std::cout << "Wait client accept.." << std::endl;
+    if (FD_ISSET(m_server_socket, &readfds)) {
+      // Accept a client connection (assuming only one client)
+      if (m_client_socket == -1) {
+          m_client_socket = accept(m_server_socket, NULL, NULL);
+          if (m_client_socket != -1) {
+              // Set the client socket to non-blocking mode
+              int m_client_socketFlags = fcntl(m_client_socket, F_GETFL, 0);
+              if (m_client_socketFlags == -1) {
+                  std::cerr << "fcntl F_GETFL for client socket failed." << std::endl;
+                  close(m_client_socket);
+                  break;
+              }
+              if (fcntl(m_client_socket, F_SETFL, m_client_socketFlags | O_NONBLOCK) == -1) {
+                  std::cerr << "fcntl F_SETFL for client socket failed." << std::endl;
+                  close(m_client_socket);
+                  break;
+              }
+              std::cout << "Client connected." << std::endl;
+          }
+      }
+    }
+
+    if (m_client_socket != -1) {
+        // Handle client data (read/write) in non-blocking mode
+        // You can use the m_client_socket to receive and send data here
+        std::cout << "got it" << std::endl;
+        // Receive and process data from the connected client
+        char buffer[1024] = {0};
+        int bytesRead;
+        while(isRunning.load()) {
+          bytesRead = recv(m_client_socket, buffer, sizeof(buffer), 0);
+          if (bytesRead>0) {
+            std::cout << "Client sent: " << buffer << std::endl;
+            // Clear the buffer for the next data
+            memset(buffer, 0, sizeof(buffer));
+          }
+          //std::cout << "is run" << std::endl;
+        }
+    }
+  }
+
+  // Clean up and close sockets...
+  if (m_client_socket != -1) {
+      close(m_client_socket);
+  }
+  close(m_server_socket);
+
+
+  return;
+
   while(isRunning.load()) {
     std::cout << "Working in the thread..." << std::endl;
     //std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -66,17 +151,17 @@ void Server::workerThread() {
   
     std::cout << "Client connected." << std::endl;
     // set the socket to non-blocking mode
-    //int flags = fcntl(m_client_socket, F_GETFL, 0);
-    //if (flags == -1) {
-    //    std::cerr << "fcntl F_GETFL failed." << std::endl;
-    //    close(m_client_socket);
-    //    //return 1;
-    //}
-    //if (fcntl(m_client_socket, F_SETFL, flags | O_NONBLOCK) == -1) {
-    //    std::cerr << "fcntl F_SETFL failed." << std::endl;
-    //    close(m_client_socket);
-    //    //return 1;
-    //}
+    int flags = fcntl(m_client_socket, F_GETFL, 0);
+    if (flags == -1) {
+        std::cerr << "fcntl F_GETFL failed." << std::endl;
+        close(m_client_socket);
+        //return 1;
+    }
+    if (fcntl(m_client_socket, F_SETFL, flags | O_NONBLOCK) == -1) {
+        std::cerr << "fcntl F_SETFL failed." << std::endl;
+        close(m_client_socket);
+        //return 1;
+    }
 
     // Receive and process data from the connected client
     char buffer[1024] = {0};
