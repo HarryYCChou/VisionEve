@@ -60,9 +60,9 @@ void Server::stop() {
 }
 
 void Server::workerThread() {
-  // set client socket to -1
-  m_client_socket = -1;
   while(isRunning.load()) {
+    // set client socket to -1
+    m_client_socket = -1;
     // set timeout
     struct timeval timeout;
     timeout.tv_sec = 3;
@@ -120,8 +120,10 @@ void Server::workerThread() {
             std::cout << "Client sent: " << buffer << std::endl;
             // Clear the buffer for the next data
             memset(buffer, 0, sizeof(buffer));
+          } else if (bytesRead==0) {
+            std::cout << "Client disconnected" << std::endl;
+            break;
           }
-          //std::cout << "is run" << std::endl;
         }
     }
   }
