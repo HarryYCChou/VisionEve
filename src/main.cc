@@ -3,6 +3,7 @@
 GLFWwindow* window;  
 const char* glsl_version = "#version 130";
 ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+bool show_demo_window = true;
 
 // glfw error callback
 static void glfw_error_callback(int error, const char* description)
@@ -25,7 +26,7 @@ int glfw_initialize() {
   glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
   // Create window with graphics context
-  window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", nullptr, nullptr);
+  window = glfwCreateWindow(1, 1, "VisionEve", nullptr, nullptr);
   if (window == nullptr)
       return 1;
 
@@ -45,7 +46,7 @@ int imgui_initialize() {
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
   io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-  //io.ConfigViewportsNoAutoMerge = true;
+  io.ConfigViewportsNoAutoMerge = true;
   //io.ConfigViewportsNoTaskBarIcon = true;
 
   // Setup Dear ImGui style
@@ -64,10 +65,6 @@ int imgui_initialize() {
   ImGui_ImplGlfw_InitForOpenGL(window, true);
   ImGui_ImplOpenGL3_Init(glsl_version);
 
-  // Our state
-  //bool show_demo_window = true;
-  //bool show_another_window = false;
-
   return 0;
 }
 
@@ -83,6 +80,14 @@ void imgui_cleanup() {
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
+}
+
+void main_UI_render() {
+    // main window
+    ImGui::SetNextWindowSize(ImVec2(400, 300));
+    ImGui::Begin("VisionEve Server");
+    ImGui::Text("This is a test sentence");
+    ImGui::End();
 }
 
 int main() {
@@ -112,10 +117,8 @@ int main() {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    // new frame
-    ImGui::Begin("Hello");
-    ImGui::Text("This is a test sentence");
-    ImGui::End();
+    // main UI
+    main_UI_render();
  
     // Rendering
     ImGui::Render();
@@ -127,8 +130,6 @@ int main() {
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     // Update and Render additional Platform Windows
-    // (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
-    //  For this specific demo app we could also call glfwMakeContextCurrent(window) directly)
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         GLFWwindow* backup_current_context = glfwGetCurrentContext();
@@ -138,7 +139,6 @@ int main() {
     }
 
     glfwSwapBuffers(window);
-    //std::cout << "debug rendering" << std::endl;
   }
 
   // cleanup
