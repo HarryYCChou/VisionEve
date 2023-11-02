@@ -1,4 +1,4 @@
-#include <main.hpp>
+#include "main.h"
 
 GLFWwindow* window;  
 const char* glsl_version = "#version 130";
