@@ -2,14 +2,26 @@
 
 void Server::run() {
   std::cout << "server is running" << std::endl;
+  if (!isRunning.load()) {
+    isRunning.store(true);
+    thread = std::thread([this] { workerThread(); });
+  }
 }
 
 void Server::stop() {
-
+  if (isRunning.load()) {
+    isRunning.store(false);
+    if (thread.joinable()) {
+      thread.join();
+    }
+  }
 }
 
 void Server::workerThread() {
-
+  while(isRunning.load()) {
+    std::cout << "Working in the thread..." << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+  }
 }
 
 //int main() {
