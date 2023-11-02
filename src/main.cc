@@ -108,9 +108,9 @@ int main() {
   // initialize imgui
   imgui_initialize();
 
-  // server
-  Server server;
-  server.run();
+  // initialize server
+  Server* server = new Server();
+  server->run();
 
   // main graphic loop
   while (!glfwWindowShouldClose(window)) {
@@ -150,6 +150,10 @@ int main() {
     if (exit_requested)
       break;
   }
+
+  // stop server
+  server->stop();
+  delete server;
 
   // cleanup
   imgui_cleanup();
