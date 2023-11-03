@@ -1,16 +1,25 @@
-#include <iostream>
-#include <cstring>
+/*
+ * Copyright (c) 2023 Harry Chou
+ */
+
+#ifndef INCLUDE_SERVER_H_
+#define INCLUDE_SERVER_H_
+
+// ==  c system headers  ==
 #include <unistd.h>
 #include <fcntl.h>
-// thread
-#include <thread>
-#include <atomic>
-#include <chrono>
 // socket
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-
+// == c++ system headers ==
+#include <iostream>
+#include <cstring>
+// thread
+#include <thread>
+#include <atomic>
+#include <chrono>
+// ==   other headers    ==
 // imgui
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -20,7 +29,7 @@
 #define PORT 62453
 
 class Server {
-public:
+ public:
   // constructor
   Server();
   ~Server();
@@ -29,7 +38,7 @@ public:
   void run();
   void stop();
 
-private:
+ private:
   // socket
   int m_server_socket;
   int m_client_socket;
@@ -43,3 +52,5 @@ private:
   // worker thread
   void workerThread();
 };
+
+#endif  // INCLUDE_SERVER_H_
