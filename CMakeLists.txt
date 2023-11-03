@@ -26,7 +26,7 @@ target_link_libraries(server PRIVATE imgui)
 # add header folder
 target_include_directories(server PRIVATE ${CMAKE_SOURCE_DIR}/include)
 # add ImGui header folder
-target_include_directories(server PRIVATE ${CMAKE_SOURCE_DIR}/lib/imgui)
+target_include_directories(server PRIVATE ${CMAKE_SOURCE_DIR}/lib)
 
 # Build executable for client.cc
 add_executable(client ${SOURCE_CLIENT})
