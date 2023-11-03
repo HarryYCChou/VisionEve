@@ -1,14 +1,17 @@
-#include "main.h"
+/*
+ * Copyright (c) 2023 Harry Chou
+ */
 
-GLFWwindow* window;  
+#include "./main.h"
+
+GLFWwindow* window;
 const char* glsl_version = "#version 130";
 ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 bool show_demo_window = true;
 bool exit_requested = false;
 
 // glfw error callback
-static void glfw_error_callback(int error, const char* description)
-{
+static void glfw_error_callback(int error, const char* description) {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 
@@ -19,7 +22,7 @@ int glfw_initialize() {
   if (!glfwInit())
       return 1;
 
-  // glfw window hint 
+  // glfw window hint
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -32,7 +35,7 @@ int glfw_initialize() {
       return 1;
 
   glfwMakeContextCurrent(window);
-  glfwSwapInterval(1); // Enable vsync
+  glfwSwapInterval(1);  // Enable vsync
 
   return 0;
 }
@@ -43,20 +46,24 @@ int imgui_initialize() {
   ImGui::CreateContext();
 
   ImGuiIO& io = ImGui::GetIO(); (void)io;
-  io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-  io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-  io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+  // Enable Keyboard Control
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+  // Enable Gamepad Controls
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+  // Enable Docking
+  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+  // Enable Multi-Viewport / Platform Windows
+  io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
   io.ConfigViewportsNoAutoMerge = true;
-  //io.ConfigViewportsNoTaskBarIcon = true;
+  io.ConfigViewportsNoTaskBarIcon = true;
 
   // Setup Dear ImGui style
   ImGui::StyleColorsDark();
 
-  // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+  //  When viewports are enabled we tweak WindowRounding/WindowBg so platform
+  //  windows can look identical to regular ones.
   ImGuiStyle& style = ImGui::GetStyle();
-  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-  {
+  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
       style.WindowRounding = 0.0f;
       style.Colors[ImGuiCol_WindowBg].w = 1.0f;
   }
@@ -72,7 +79,6 @@ void glfw_cleanup() {
   // cleanup glfw
   glfwDestroyWindow(window);
   glfwTerminate();
-
 }
 
 void imgui_cleanup() {
@@ -88,16 +94,15 @@ void main_UI_render() {
     ImGui::Begin("VisionEve Server");
     ImGui::Text("This is a test sentence");
 
-    // exit button    
+    // exit button
     if (ImGui::Button("Exit")) {
       exit_requested = true;
     }
-    
+
     ImGui::End();
 }
 
 int main() {
-
   // initialize glfw
   if (glfw_initialize()) {
     // FIXME: log failed to initialize glfw
@@ -125,19 +130,19 @@ int main() {
 
     // main UI
     main_UI_render();
- 
+
     // Rendering
     ImGui::Render();
     int display_w, display_h;
     glfwGetFramebufferSize(window, &display_w, &display_h);
     glViewport(0, 0, display_w, display_h);
-    glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+    glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w,
+                    clear_color.z * clear_color.w, clear_color.w);
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     // Update and Render additional Platform Windows
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
         GLFWwindow* backup_current_context = glfwGetCurrentContext();
         ImGui::UpdatePlatformWindows();
         ImGui::RenderPlatformWindowsDefault();
