@@ -136,7 +136,7 @@ int main() {
   imgui_initialize();
 
   // initialize server
-  Server* server = new Server();
+  Server* server = new Server(logger);
   server->run();
 
   // main graphic loop

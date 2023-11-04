@@ -24,6 +24,9 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+// spdlog
+#include "spdlog/spdlog.h"
+#include <spdlog/sinks/ostream_sink.h>
 
 // port
 #define PORT 62453
@@ -31,7 +34,7 @@
 class Server {
  public:
   // constructor
-  Server();
+  Server(std::shared_ptr<spdlog::logger>);
   ~Server();
 
   // function
@@ -39,6 +42,9 @@ class Server {
   void stop();
 
  private:
+  // logger
+  std::shared_ptr<spdlog::logger> logger_;
+
   // socket
   int m_server_socket;
   int m_client_socket;
@@ -48,6 +54,9 @@ class Server {
   // thread
   std::thread thread;
   std::atomic<bool> isRunning;
+
+  // UI
+  void render();
 
   // worker thread
   void workerThread();

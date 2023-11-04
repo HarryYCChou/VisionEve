@@ -1,11 +1,14 @@
 #include <server.h>
 
-Server::Server() : isRunning(false) {
+Server::Server(std::shared_ptr<spdlog::logger> logger)
+    : isRunning(false), logger_(logger) {
+  logger_->info("Server initializing.");
   // initialize for socket 
+  logger_->info("Socket initializing.");
   m_server_socket = socket(AF_INET, SOCK_STREAM, 0);
   if (m_server_socket == -1) {
-      perror("Server socket creation failed");
-      exit(1);
+    logger_->error("Server socket creation failed");
+    exit(1);
   }
 
   // define server's address and port to bind to
@@ -16,26 +19,27 @@ Server::Server() : isRunning(false) {
 
   // bind the socket to the server address
   if (bind(m_server_socket, (struct sockaddr*)&m_server_address, sizeof(m_server_address)) == -1) {
-      perror("Server binding failed");
-      exit(1);
+    logger_->error("Server binding failed.");
+    exit(1);
   }
 
   // listen for incoming connections
   if (listen(m_server_socket, 5) == -1) {
-      perror("Server listening failed");
-      exit(1);
+    logger_->error("Server listening failed");
+    exit(1);
   }
 
   // set the server socket to non-blocking mode
   int flags = fcntl(m_server_socket, F_GETFL, 0);
   if (flags == -1) {
-      std::cerr << "fcntl F_GETFL failed." << std::endl;
-      close(m_server_socket);
+    logger_->error("fcntl F_GETFL failed.");
+    close(m_server_socket);
   }
   if (fcntl(m_server_socket, F_SETFL, flags | O_NONBLOCK) == -1) {
-      std::cerr << "fcntl F_SETFL failed." << std::endl;
-      close(m_server_socket);
+    logger_->error("fcntl F_SETFL failed.");
+    close(m_server_socket);
   }
+  logger_->info("Server initialization completed.");
 }
 
 Server::~Server() {
@@ -43,10 +47,12 @@ Server::~Server() {
 }
 
 void Server::run() {
-  std::cout << "server is running" << std::endl;
   if (!isRunning.load()) {
     isRunning.store(true);
     thread = std::thread([this] { workerThread(); });
+    logger_->info("Server is running.");
+  } else {
+    logger_->warn("Server is already run.");
   }
 }
 
@@ -56,7 +62,14 @@ void Server::stop() {
     if (thread.joinable()) {
       thread.join();
     }
+    logger_->info("Server is stopped.");
+  } else {
+    logger_->warn("Server is already stopped.");
   }
+}
+
+void Server::render() {
+
 }
 
 void Server::workerThread() {
