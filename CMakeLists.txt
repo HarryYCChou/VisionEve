@@ -11,6 +11,7 @@ set(SOURCE_CLIENT src/client.cc)
 # Find the required libraries
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(spdlog REQUIRED)
 
 # add ImGui library
 add_subdirectory(lib/imgui)
@@ -23,6 +24,8 @@ target_link_libraries(server PRIVATE glfw)
 target_link_libraries(server PRIVATE OpenGL::GL)
 # Link ImGui to the executable
 target_link_libraries(server PRIVATE imgui)
+# Link spdlog to the executable
+target_link_libraries(server PRIVATE spdlog::spdlog)
 # add header folder
 target_include_directories(server PRIVATE ${CMAKE_SOURCE_DIR}/include)
 # add ImGui header folder

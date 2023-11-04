@@ -10,6 +10,10 @@ ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 bool show_demo_window = true;
 bool exit_requested = false;
 
+// Create an std::stringstream to capture log messages
+std::stringstream logCaptureStream;
+std::shared_ptr<spdlog::logger> logger;
+
 // glfw error callback
 static void glfw_error_callback(int error, const char* description) {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
@@ -17,6 +21,7 @@ static void glfw_error_callback(int error, const char* description) {
 
 // glfw initialize function
 int glfw_initialize() {
+  logger->info("GLFW initializing.");
   // set glfw error callback function
   glfwSetErrorCallback(glfw_error_callback);
   if (!glfwInit())
@@ -41,6 +46,7 @@ int glfw_initialize() {
 }
 
 int imgui_initialize() {
+  logger->info("ImGui initializing.");
   // Setup Dear ImGui context
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
@@ -90,9 +96,16 @@ void imgui_cleanup() {
 
 void main_UI_render() {
     // main window
-    ImGui::SetNextWindowSize(ImVec2(400, 300));
+    ImGui::SetNextWindowSize(ImVec2(800, 300));
     ImGui::Begin("VisionEve Server");
-    ImGui::Text("This is a test sentence");
+
+    // Retrieve the captured log messages as a string
+    ImGui::Text("Log system");
+    ImGui::BeginChild("Log system", ImVec2(780, 100), true,
+                        ImGuiWindowFlags_HorizontalScrollbar);
+    std::string capturedLogs = logCaptureStream.str();
+    ImGui::TextUnformatted(capturedLogs.c_str());
+    ImGui::EndChild();
 
     // exit button
     if (ImGui::Button("Exit")) {
@@ -103,9 +116,18 @@ void main_UI_render() {
 }
 
 int main() {
+  // Create an ostream_sink using the logCaptureStream
+  auto ostreamSink = std::make_shared<spdlog::sinks::ostream_sink_st>(logCaptureStream);
+  // Create a logger with the ostream_sink
+  logger = std::make_shared<spdlog::logger>("server", ostreamSink);
+  spdlog::register_logger(logger);
+  // Log a message
+  logger->info("Log system is ready.");
+
   // initialize glfw
   if (glfw_initialize()) {
     // FIXME: log failed to initialize glfw
+    logger->error("GLFW failed to initialize.");
     glfw_cleanup();
     return 1;
   }

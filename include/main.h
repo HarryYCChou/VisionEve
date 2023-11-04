@@ -9,8 +9,10 @@
 // glfw
 #include <GLFW/glfw3.h>
 // == c++ system headers ==
+#include <string>
 #include <cstring>
 #include <iostream>
+#include <sstream>
 // ==   other headers    ==
 // server
 #include "./server.h"
@@ -18,5 +20,8 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+// spdlog
+#include "spdlog/spdlog.h"
+#include <spdlog/sinks/ostream_sink.h>
 
 #endif  // INCLUDE_MAIN_H_
