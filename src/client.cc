@@ -16,7 +16,7 @@ int main() {
   struct sockaddr_in serverAddress;
   serverAddress.sin_family = AF_INET;
   serverAddress.sin_port = htons(62453); // Use the same port as the server
-  serverAddress.sin_addr.s_addr = inet_addr("192.168.10.2"); // Replace with the server's IP address
+  serverAddress.sin_addr.s_addr = inet_addr("127.0.0.1"); // Replace with the server's IP address
 
   // connect to server
   if (connect(clientSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress)) == -1) {
