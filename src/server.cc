@@ -7,7 +7,7 @@ Server::Server(std::shared_ptr<spdlog::logger> logger)
   logger_->info("Socket initializing.");
   m_server_socket = socket(AF_INET, SOCK_STREAM, 0);
   if (m_server_socket == -1) {
-    logger_->error("Server socket creation failed");
+    logger_->error("Server socket creation failed.");
     exit(1);
   }
 
@@ -25,7 +25,7 @@ Server::Server(std::shared_ptr<spdlog::logger> logger)
 
   // listen for incoming connections
   if (listen(m_server_socket, 5) == -1) {
-    logger_->error("Server listening failed");
+    logger_->error("Server listening failed.");
     exit(1);
   }
 
@@ -86,7 +86,7 @@ void Server::workerThread() {
     FD_SET(m_server_socket, &readfds);
 
 
-    std::cout << "Select.." << std::endl;
+    logger_->debug("Socket select");
     // Wait for an event on the server socket
     int ret = select(m_server_socket + 1, &readfds, NULL, NULL, &timeout);
     if (ret < 0) {
@@ -94,10 +94,11 @@ void Server::workerThread() {
         break;
     } else if ( ret == 0 ) {
       // timeout
-      std::cout << "Timeout..." << std::endl;
+      logger_->debug("Socket select timeout.");
+      continue;
     }
 
-    std::cout << "Wait client accept.." << std::endl;
+    logger_->info("Wait for client accept");
     if (FD_ISSET(m_server_socket, &readfds)) {
       // Accept a client connection (assuming only one client)
       if (m_client_socket == -1) {
@@ -106,16 +107,16 @@ void Server::workerThread() {
               // Set the client socket to non-blocking mode
               int m_client_socketFlags = fcntl(m_client_socket, F_GETFL, 0);
               if (m_client_socketFlags == -1) {
-                  std::cerr << "fcntl F_GETFL for client socket failed." << std::endl;
+                  logger_->error("fcntl F_GETFL for client socket failed.");
                   close(m_client_socket);
                   break;
               }
               if (fcntl(m_client_socket, F_SETFL, m_client_socketFlags | O_NONBLOCK) == -1) {
-                  std::cerr << "fcntl F_SETFL for client socket failed." << std::endl;
+                  logger_->error("fcntl F_SETFL for client socket failed.");
                   close(m_client_socket);
                   break;
               }
-              std::cout << "Client connected." << std::endl;
+              logger_->info("Client connected.");
           }
       }
     }
@@ -123,18 +124,18 @@ void Server::workerThread() {
     if (m_client_socket != -1) {
         // Handle client data (read/write) in non-blocking mode
         // You can use the m_client_socket to receive and send data here
-        std::cout << "got it" << std::endl;
+        logger_->debug("Ready for getting data.");
         // Receive and process data from the connected client
         char buffer[1024] = {0};
         int bytesRead;
         while(isRunning.load()) {
           bytesRead = recv(m_client_socket, buffer, sizeof(buffer), 0);
           if (bytesRead>0) {
-            std::cout << "Client sent: " << buffer << std::endl;
+            logger_->info("Client sent: {}", buffer);
             // Clear the buffer for the next data
             memset(buffer, 0, sizeof(buffer));
           } else if (bytesRead==0) {
-            std::cout << "Client disconnected" << std::endl;
+            logger_->info("Client disconnected.");
             break;
           }
         }
@@ -147,64 +148,7 @@ void Server::workerThread() {
   }
   close(m_server_socket);
 
-
   return;
-
-  while(isRunning.load()) {
-    std::cout << "Working in the thread..." << std::endl;
-    //std::this_thread::sleep_for(std::chrono::seconds(1));
-    // waiting
-    std::cout << "Server is waiting for a client to connect..." << std::endl;
-  
-    // accept incoming connections
-    int client_addr_size = sizeof(m_client_address);
-    m_client_socket = accept(m_server_socket, (struct sockaddr*)&m_client_address, (socklen_t*)&client_addr_size);
-    if (m_client_socket == -1) {
-        perror("Server accept failed");
-        exit(1);
-    }
-  
-    std::cout << "Client connected." << std::endl;
-    // set the socket to non-blocking mode
-    int flags = fcntl(m_client_socket, F_GETFL, 0);
-    if (flags == -1) {
-        std::cerr << "fcntl F_GETFL failed." << std::endl;
-        close(m_client_socket);
-        //return 1;
-    }
-    if (fcntl(m_client_socket, F_SETFL, flags | O_NONBLOCK) == -1) {
-        std::cerr << "fcntl F_SETFL failed." << std::endl;
-        close(m_client_socket);
-        //return 1;
-    }
-
-    // Receive and process data from the connected client
-    char buffer[1024] = {0};
-    int bytesRead;
-    while(isRunning.load()) {
-      bytesRead = recv(m_client_socket, buffer, sizeof(buffer), 0);
-      if (bytesRead>0) {
-        std::cout << "Client sent: " << buffer << std::endl;
-        // Clear the buffer for the next data
-        memset(buffer, 0, sizeof(buffer));
-      }
-      //std::cout << "is run" << std::endl;
-    }
-    //while ((bytesRead = recv(m_client_socket, buffer, sizeof(buffer), 0)) > 0) {
-    //    std::cout << "Client sent: " << buffer << std::endl;
-    //    // Clear the buffer for the next data
-    //    memset(buffer, 0, sizeof(buffer));
-    //}
-  
-    if (bytesRead == 0) {
-        std::cout << "Client disconnected." << std::endl;
-    } else {
-        perror("Server receive failed");
-    }
-  
-    // Close the client socket
-    close(m_client_socket);
-  }
 }
 
 //int main() {
