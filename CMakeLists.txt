@@ -33,3 +33,15 @@ target_include_directories(server PRIVATE ${CMAKE_SOURCE_DIR}/lib)
 
 # Build executable for client.cc
 add_executable(client ${SOURCE_CLIENT})
+# Link GLFW to the executable
+target_link_libraries(client PRIVATE glfw)
+# Link OpenGL to the executable
+target_link_libraries(client PRIVATE OpenGL::GL)
+# Link ImGui to the executable
+target_link_libraries(client PRIVATE imgui)
+# Link spdlog to the executable
+target_link_libraries(client PRIVATE spdlog::spdlog)
+# add header folder
+target_include_directories(client PRIVATE ${CMAKE_SOURCE_DIR}/include)
+# add ImGui header folder
+target_include_directories(client PRIVATE ${CMAKE_SOURCE_DIR}/lib)

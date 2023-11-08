@@ -1,9 +1,4 @@
-#include <iostream>
-#include <cstring>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
+#include "./client.h"
 
 int main() {
   // create client socket
