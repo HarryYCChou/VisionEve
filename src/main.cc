@@ -105,6 +105,7 @@ void main_UI_render() {
                         ImGuiWindowFlags_HorizontalScrollbar);
     std::string capturedLogs = logCaptureStream.str();
     ImGui::TextUnformatted(capturedLogs.c_str());
+    ImGui::SetScrollY(ImGui::GetScrollMaxY());
     ImGui::EndChild();
 
     // exit button
