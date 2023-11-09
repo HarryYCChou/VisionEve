@@ -40,6 +40,7 @@ class Client {
   // function
   void run();
   void stop();
+  void connect_to_server();
 
  private:
   // logger
