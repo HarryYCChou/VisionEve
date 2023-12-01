@@ -41,6 +41,7 @@ class Client {
   void run();
   void stop();
   void connect_to_server();
+  void disconnect_to_server();
 
  private:
   // logger
@@ -51,6 +52,7 @@ class Client {
   int m_client_socket;
   struct sockaddr_in m_server_address;
   struct sockaddr_in m_client_address;
+  void send_cmd();
 
   // thread
   std::thread thread;

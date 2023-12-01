@@ -3,7 +3,7 @@
 Client::Client(std::shared_ptr<spdlog::logger> logger) {
   // create client socket
   int m_client_socket = socket(AF_INET, SOCK_STREAM, 0);
-  if (clientSocket == -1) {
+  if (m_client_socket == -1) {
       perror("Client socket creation failed");
       exit(1);
   }
@@ -36,17 +36,17 @@ void Client::send_cmd() {
   //while(1) {
   // FIXME check connection
   //std::cout << "Please enter a phrase or [q] to exit: ";
-  //std::string strInput;
+  std::string strInput;
   //std::cin >> strInput;
 
-  if (strInput.compare("q")==0) break;
+  if (strInput.compare("q")==0) return;
 
   // convert the std::string to a char*
   char* msg = new char[strInput.length()+1];  // +1 for the null terminator
 
   // copy
   std::strcpy(msg, strInput.c_str());
-  send(clientSocket, msg, strlen(msg), 0);
+  send(m_client_socket, msg, strlen(msg), 0);
   //}
 }
 
