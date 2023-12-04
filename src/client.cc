@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023 Harry Chou
+ */
+
 #include "./client.h"
 
 Client::Client(std::shared_ptr<spdlog::logger> logger) {
