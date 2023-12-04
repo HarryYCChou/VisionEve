@@ -8,6 +8,8 @@
 // ==  c system headers  ==
 #include <unistd.h>
 #include <fcntl.h>
+// glfw
+#include <GLFW/glfw3.h>
 // socket
 #include <arpa/inet.h>
 #include <sys/socket.h>
@@ -15,6 +17,7 @@
 // == c++ system headers ==
 #include <iostream>
 #include <cstring>
+#include <sstream>
 // thread
 #include <thread>
 #include <atomic>
