@@ -96,7 +96,7 @@ void imgui_cleanup() {
 
 void main_UI_render() {
     // main window
-    ImGui::SetNextWindowSize(ImVec2(800, 300));
+    ImGui::SetNextWindowSize(ImVec2(1920, 1080));
     ImGui::Begin("VisionEve Client");
 
     // Retrieve the captured log messages as a string
