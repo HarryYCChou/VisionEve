@@ -17,6 +17,7 @@
 // == c++ system headers ==
 #include <iostream>
 #include <cstring>
+#include <string>
 #include <sstream>
 // thread
 #include <thread>
