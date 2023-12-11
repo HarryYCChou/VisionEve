@@ -2,8 +2,8 @@
  * Copyright (c) 2023 Harry Chou
  */
 
-#ifndef INCLUDE_INCLUDE_H_
-#define INCLUDE_INCLUDE_H_
+#ifndef INCLUDE_CLIENT_H_
+#define INCLUDE_CLIENT_H_
 
 // ==  c system headers  ==
 #include <unistd.h>
