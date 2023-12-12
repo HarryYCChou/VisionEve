@@ -156,6 +156,9 @@ Client::Client(std::shared_ptr<spdlog::logger> logger) {
   m_server_address.sin_family = AF_INET;
   m_server_address.sin_port = htons(PORT); // Use the same port as the server
   m_server_address.sin_addr.s_addr = inet_addr("127.0.0.1"); // Replace with the server's IP address
+
+  // user data
+  user_info = new User();
 }
 
 Client::~Client() {

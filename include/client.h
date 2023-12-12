@@ -31,6 +31,8 @@
 // spdlog
 #include "spdlog/spdlog.h"
 #include <spdlog/sinks/ostream_sink.h>
+// user
+#include "./user.h"
 
 // port
 #define PORT 62453
@@ -61,6 +63,9 @@ class Client {
   // thread
   std::thread thread;
   std::atomic<bool> isRunning;
+
+  // user data
+  User *user_info = nullptr;
 
   // UI
   void render();
