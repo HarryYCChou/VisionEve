@@ -105,45 +105,6 @@ void imgui_cleanup() {
   ImGui::DestroyContext();
 }
 
-void main_UI_render() {
-
-    // main window
-    ImGui::SetNextWindowSize(ImVec2(1920, 1080));
-    //ImGui::PushFont(opensans_reg_font);
-    ImGui::Begin("VisionEve Client");
-
-    // patient data
-    ImGui::BeginChild("Child", ImVec2(400, 600), true);
-    // title
-    ImGui::PushFont(opensans_reg_font_l);
-    ImGui::Text("Personal Info");
-    ImGui::PopFont();
-
-    ImGui::Text("First Name:"); ImGui::SameLine();
-    //ImGui::InputText("FirstName", user_info->first_name, IM_ARRAYSIZE(user_info->first_name));
-
-    ImGui::EndChild();
-    //ImGui::PopFont();
-
-    // Retrieve the captured log messages as a string
-    ImGui::PushFont(opensans_reg_font_s);
-    ImGui::BeginChild("Log system", ImVec2(780, 100), true,
-                        ImGuiWindowFlags_HorizontalScrollbar);
-    ImGui::Text("Log system");
-    std::string capturedLogs = logCaptureStream.str();
-    ImGui::TextUnformatted(capturedLogs.c_str());
-    ImGui::SetScrollY(ImGui::GetScrollMaxY());
-    ImGui::EndChild();
-    ImGui::PopFont();
-
-    // exit button
-    if (ImGui::Button("Exit")) {
-      exit_requested = true;
-    }
-
-    ImGui::End();
-}
-
 Client::Client(std::shared_ptr<spdlog::logger> logger) {
   // create client socket
   int m_client_socket = socket(AF_INET, SOCK_STREAM, 0);
