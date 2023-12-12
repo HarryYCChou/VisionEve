@@ -6,12 +6,13 @@ project(bilt)
 
 # Define the source files
 set(SOURCE_SERVER src/main.cc src/server.cc)
-set(SOURCE_CLIENT src/client.cc)
+set(SOURCE_CLIENT src/client.cc src/database.cc)
 
 # Find the required libraries
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(spdlog REQUIRED)
+find_package(SQLite3 REQUIRED)
 
 # add ImGui library
 add_subdirectory(lib/imgui)
@@ -41,6 +42,8 @@ target_link_libraries(client PRIVATE OpenGL::GL)
 target_link_libraries(client PRIVATE imgui)
 # Link spdlog to the executable
 target_link_libraries(client PRIVATE spdlog::spdlog)
+# Link sqlite to the executable
+target_link_libraries(client PRIVATE sqlite3)
 # add header folder
 target_include_directories(client PRIVATE ${CMAKE_SOURCE_DIR}/include)
 # add ImGui header folder

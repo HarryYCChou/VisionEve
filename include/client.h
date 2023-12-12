@@ -33,6 +33,8 @@
 #include <spdlog/sinks/ostream_sink.h>
 // user
 #include "./user.h"
+// database
+#include "./database.h"
 
 // port
 #define PORT 62453
@@ -42,6 +44,9 @@ class Client {
   // constructor
   Client(std::shared_ptr<spdlog::logger>);
   ~Client();
+
+  // database
+  Database *db = nullptr;
 
   // user data
   User *user_info = nullptr;

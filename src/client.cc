@@ -264,6 +264,9 @@ int main() {
   Client* client = new Client(logger);
   client->run();
 
+  // initialize database
+  Database* db = new Database(logger);
+
   // main graphic loop
   while (!glfwWindowShouldClose(window)) {
     // graphic window
