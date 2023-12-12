@@ -77,6 +77,8 @@ int imgui_initialize() {
   if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
       style.WindowRounding = 0.0f;
       style.ChildRounding = 10.0f;
+      style.FrameRounding = 10.0f;
+      style.TabRounding = 10.0f;
       style.Colors[ImGuiCol_WindowBg].w = 1.0f;
   }
 
@@ -169,33 +171,50 @@ void Client::send_cmd() {
 void Client::render() {
     // main window
     ImGui::SetNextWindowSize(ImVec2(1920, 1080));
-    ImGui::Begin("VisionEve Client");
+    ImGui::Begin("VisionEve Client", NULL, ImGuiWindowFlags_NoResize);
 
     // patient data
-    ImGui::BeginChild("Child", ImVec2(400, 600), true);
+    ImGui::BeginChild("PatientDataChild", ImVec2(400, 800), true);
     // title
     ImGui::PushFont(opensans_reg_font_l);
     ImGui::Text("Personal Info");
     ImGui::PopFont();
 
-    // first name
-    ImGui::Columns(2, "Info table"); // 2 columns
-    ImGui::Text("First Name:"); ImGui::NextColumn();
-    ImGui::InputText("##FirstName", user_info->first_name, IM_ARRAYSIZE(user_info->first_name)); ImGui::NextColumn();
+    //// first name
+    int input_width = 230;
+    int input_offset = 150;
+    ImGui::Text("First Name:"); ImGui::SameLine(input_offset); 
+    ImGui::SetNextItemWidth(input_width);
+    ImGui::InputText("##FirstName", user_info->first_name, IM_ARRAYSIZE(user_info->first_name));
     // last name
-    ImGui::Text("Last Name:"); ImGui::NextColumn();
-    ImGui::InputText("##LastName", user_info->last_name, IM_ARRAYSIZE(user_info->last_name)); ImGui::NextColumn();
-    // eye condition
-    ImGui::Text("Eye condition:"); ImGui::NextColumn();
-    ImGui::InputText("##EyeCondition", user_info->eye_condition, IM_ARRAYSIZE(user_info->eye_condition)); ImGui::NextColumn();
-    // eye color
-    ImGui::Text("Eye color:"); ImGui::NextColumn();
-    ImGui::InputText("##EyeColor", user_info->eye_color, IM_ARRAYSIZE(user_info->eye_color)); ImGui::NextColumn();
-
+    ImGui::Text("Last Name:"); ImGui::SameLine(input_offset);
+    ImGui::SetNextItemWidth(input_width);
+    ImGui::InputText("##LastName", user_info->last_name, IM_ARRAYSIZE(user_info->last_name));
+    // age
+    ImGui::Text("Age:"); ImGui::SameLine(input_offset);
+    ImGui::SetNextItemWidth(input_width);
+    ImGui::InputInt("##Age", &user_info->age);
     // gender
-    //ImGui::Text("Gender:"); ImGui::NextColumn();
-    //ImGui::InputText("##Gender", user_info->gender, IM_ARRAYSIZE(user_info->gender)); ImGui::NextColumn();
-
+    ImGui::Text("Gender:"); ImGui::SameLine(input_offset);
+    ImGui::RadioButton("male", &user_info->gender, 0); ImGui::SameLine(input_offset+120);
+    ImGui::RadioButton("female", &user_info->gender, 1);
+    // race
+    ImGui::Text("Race:"); ImGui::SameLine(input_offset);
+    ImGui::SetNextItemWidth(input_width);
+    ImGui::InputText("##Race", user_info->race, IM_ARRAYSIZE(user_info->race));
+    // eye color
+    ImGui::Text("Eye color:"); ImGui::SameLine(input_offset);
+    ImGui::SetNextItemWidth(input_width);
+    ImGui::InputText("##EyeColor", user_info->eye_color, IM_ARRAYSIZE(user_info->eye_color));
+    // medical condition
+    ImGui::Text("Medical Condition:");
+    ImGui::InputTextMultiline("##MedicalCondition", user_info->medical_condition, sizeof(user_info->medical_condition), ImVec2(370.0f, 100.0f));
+    // eye condition
+    ImGui::Text("Eye condition:");
+    ImGui::InputTextMultiline("##EyeCondition", user_info->eye_condition, sizeof(user_info->eye_condition), ImVec2(370.0f, 100.0f));
+    // user note
+    ImGui::Text("User note:");
+    ImGui::InputTextMultiline("##UserNote", user_info->user_note, sizeof(user_info->user_note), ImVec2(370.0f, 100.0f));
 
     ImGui::EndChild();
 

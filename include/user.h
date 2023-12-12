@@ -23,8 +23,7 @@ class User {
   char eye_condition[128] = "\0";
   char medical_condition[128] = "\0";
   char eye_color[128] = "\0";
-  char note_user[128] = "\0";
-  char note_experiment[128] = "\0";
+  char user_note[128] = "\0";
 
   // function
 
