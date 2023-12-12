@@ -18,10 +18,13 @@ class User {
   char first_name[128] = "\0";
   char last_name[128] = "\0";
   int gender = 0;
+  int age = 0;
   char race[128] = "\0";
   char eye_condition[128] = "\0";
+  char medical_condition[128] = "\0";
   char eye_color[128] = "\0";
-  char note[128] = "\0";
+  char note_user[128] = "\0";
+  char note_experiment[128] = "\0";
 
   // function
 
