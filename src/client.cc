@@ -180,9 +180,12 @@ void Client::render() {
     ImGui::Text("Personal Info");
     ImGui::PopFont();
 
-    //// first name
     int input_width = 230;
     int input_offset = 150;
+    // id
+    ImGui::Text("ID:"); ImGui::SameLine(input_offset);
+    ImGui::Text("##%015d", user_info->id);
+    // first name
     ImGui::Text("First Name:"); ImGui::SameLine(input_offset); 
     ImGui::SetNextItemWidth(input_width);
     ImGui::InputText("##FirstName", user_info->first_name, IM_ARRAYSIZE(user_info->first_name));

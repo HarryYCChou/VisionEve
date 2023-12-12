@@ -15,6 +15,7 @@ class User {
   ~User() {};
 
   // data
+  int id = 385;
   char first_name[128] = "\0";
   char last_name[128] = "\0";
   int gender = 0;
