@@ -43,11 +43,17 @@ class Client {
   Client(std::shared_ptr<spdlog::logger>);
   ~Client();
 
+  // user data
+  User *user_info = nullptr;
+
   // function
   void run();
   void stop();
   void connect_to_server();
   void disconnect_to_server();
+
+  // UI
+  void render();
 
  private:
   // logger
@@ -63,12 +69,6 @@ class Client {
   // thread
   std::thread thread;
   std::atomic<bool> isRunning;
-
-  // user data
-  User *user_info = nullptr;
-
-  // UI
-  void render();
 
   // worker thread
   void workerThread();

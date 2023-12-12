@@ -120,7 +120,7 @@ void main_UI_render() {
     ImGui::PopFont();
 
     ImGui::Text("First Name:"); ImGui::SameLine();
-    //ImGui::InputText("#FirstName", first_name, IM_ARRAYSIZE(first_name));
+    //ImGui::InputText("FirstName", user_info->first_name, IM_ARRAYSIZE(user_info->first_name));
 
     ImGui::EndChild();
     //ImGui::PopFont();
@@ -205,6 +205,58 @@ void Client::send_cmd() {
   //}
 }
 
+void Client::render() {
+    // main window
+    ImGui::SetNextWindowSize(ImVec2(1920, 1080));
+    ImGui::Begin("VisionEve Client");
+
+    // patient data
+    ImGui::BeginChild("Child", ImVec2(400, 600), true);
+    // title
+    ImGui::PushFont(opensans_reg_font_l);
+    ImGui::Text("Personal Info");
+    ImGui::PopFont();
+
+    // first name
+    ImGui::Columns(2, "Info table"); // 2 columns
+    ImGui::Text("First Name:"); ImGui::NextColumn();
+    ImGui::InputText("##FirstName", user_info->first_name, IM_ARRAYSIZE(user_info->first_name)); ImGui::NextColumn();
+    // last name
+    ImGui::Text("Last Name:"); ImGui::NextColumn();
+    ImGui::InputText("##LastName", user_info->last_name, IM_ARRAYSIZE(user_info->last_name)); ImGui::NextColumn();
+    // eye condition
+    ImGui::Text("Eye condition:"); ImGui::NextColumn();
+    ImGui::InputText("##EyeCondition", user_info->eye_condition, IM_ARRAYSIZE(user_info->eye_condition)); ImGui::NextColumn();
+    // eye color
+    ImGui::Text("Eye color:"); ImGui::NextColumn();
+    ImGui::InputText("##EyeColor", user_info->eye_color, IM_ARRAYSIZE(user_info->eye_color)); ImGui::NextColumn();
+
+    // gender
+    //ImGui::Text("Gender:"); ImGui::NextColumn();
+    //ImGui::InputText("##Gender", user_info->gender, IM_ARRAYSIZE(user_info->gender)); ImGui::NextColumn();
+
+
+    ImGui::EndChild();
+
+    // Retrieve the captured log messages as a string
+    ImGui::PushFont(opensans_reg_font_s);
+    ImGui::BeginChild("Log system", ImVec2(780, 100), true,
+                        ImGuiWindowFlags_HorizontalScrollbar);
+    ImGui::Text("Log system");
+    std::string capturedLogs = logCaptureStream.str();
+    ImGui::TextUnformatted(capturedLogs.c_str());
+    ImGui::SetScrollY(ImGui::GetScrollMaxY());
+    ImGui::EndChild();
+    ImGui::PopFont();
+
+    // exit button
+    if (ImGui::Button("Exit")) {
+      exit_requested = true;
+    }
+
+    ImGui::End();
+}
+
 int main() {
   // Create an ostream_sink using the logCaptureStream
   auto ostreamSink = std::make_shared<spdlog::sinks::ostream_sink_st>(logCaptureStream);
@@ -241,7 +293,8 @@ int main() {
     ImGui::NewFrame();
 
     // main UI
-    main_UI_render();
+    client->render();
+    //main_UI_render();
 
     // Rendering
     ImGui::Render();

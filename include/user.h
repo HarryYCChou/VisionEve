@@ -16,6 +16,12 @@ class User {
 
   // data
   char first_name[128] = "\0";
+  char last_name[128] = "\0";
+  int gender = 0;
+  char race[128] = "\0";
+  char eye_condition[128] = "\0";
+  char eye_color[128] = "\0";
+  char note[128] = "\0";
 
   // function
 
