@@ -18,7 +18,7 @@ class Database {
   // constructor
   Database() {};
   Database(std::shared_ptr<spdlog::logger> logger);
-  ~Database() {};
+  ~Database();
 
   // logger
   std::shared_ptr<spdlog::logger> logger;
@@ -26,6 +26,14 @@ class Database {
   // function
 
  private:
+  // database
+  std::string db_name = "test.db";
+  sqlite3 *db;
+
+  // database function
+  void open_database();
+  void close_database();
+
 };
 
 #endif  // INCLUDE_DATABASE_H_
