@@ -171,7 +171,8 @@ void Client::send_cmd() {
 void Client::render() {
     // main window
     ImGui::SetNextWindowSize(ImVec2(1920, 1080));
-    ImGui::Begin("VisionEve Client", NULL, ImGuiWindowFlags_NoResize);
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::Begin("VisionEve Client", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
 
     // patient data
     ImGui::BeginChild("PatientDataChild", ImVec2(400, 800), true);
