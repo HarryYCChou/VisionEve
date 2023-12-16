@@ -59,6 +59,7 @@ class Client {
 
   // UI
   void render();
+  void render_patient_data();
 
  private:
   // logger

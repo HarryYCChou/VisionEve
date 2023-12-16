@@ -168,12 +168,7 @@ void Client::send_cmd() {
   //}
 }
 
-void Client::render() {
-    // main window
-    ImGui::SetNextWindowSize(ImVec2(1920, 1080));
-    ImGui::SetNextWindowPos(ImVec2(0,0));
-    ImGui::Begin("VisionEve Client", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
-
+void Client::render_patient_data() {
     // patient data
     ImGui::BeginChild("PatientDataChild", ImVec2(400, 800), true);
     // title
@@ -221,6 +216,16 @@ void Client::render() {
     ImGui::InputTextMultiline("##UserNote", user_info->user_note, sizeof(user_info->user_note), ImVec2(370.0f, 100.0f));
 
     ImGui::EndChild();
+}
+
+void Client::render() {
+    // main window
+    ImGui::SetNextWindowSize(ImVec2(1920, 1080));
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::Begin("VisionEve Client", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
+
+    // patient data
+    render_patient_data();
 
     // Retrieve the captured log messages as a string
     ImGui::PushFont(opensans_reg_font_s);
