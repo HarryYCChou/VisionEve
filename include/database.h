@@ -26,6 +26,8 @@ class Database {
   std::shared_ptr<spdlog::logger> logger;
 
   // function
+  void add_user(User*);
+  void del_user();
 
  private:
   // database
@@ -36,9 +38,6 @@ class Database {
   // database function
   void open_database();
   void close_database();
-  void add_user(User*);
-  void del_user();
-
 };
 
 #endif  // INCLUDE_DATABASE_H_
