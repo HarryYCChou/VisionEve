@@ -12,6 +12,8 @@
 #include "spdlog/spdlog.h"
 // sqlite3
 #include <sqlite3.h>
+// User
+#include "./user.h"
 
 class Database {
  public:
@@ -28,11 +30,14 @@ class Database {
  private:
   // database
   std::string db_name = "test.db";
+  std::string table_name = "patients";
   sqlite3 *db;
 
   // database function
   void open_database();
   void close_database();
+  void add_user(User*);
+  void del_user();
 
 };
 
