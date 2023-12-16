@@ -33,7 +33,8 @@ class Database {
   // database
   std::string db_name = "test.db";
   std::string table_name = "patients";
-  sqlite3 *db;
+  sqlite3 *db = nullptr;
+  char *zErrMsg = 0;
 
   // database function
   void open_database();

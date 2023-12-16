@@ -224,6 +224,13 @@ void Client::render() {
     ImGui::SetNextWindowPos(ImVec2(0,0));
     ImGui::Begin("VisionEve Client", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
 
+    // button
+    if (ImGui::Button("New")) {
+        User* u = new User();
+
+        db->add_user(u);
+    }
+
     // patient data
     render_patient_data();
 
