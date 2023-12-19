@@ -2,7 +2,7 @@
  * Copyright (c) 2023 Harry Chou
  */
 
-#include "./main.h"
+#include "./main_server.h"
 
 GLFWwindow* window;
 const char* glsl_version = "#version 130";
