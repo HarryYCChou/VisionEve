@@ -19,6 +19,7 @@
 #include <cstring>
 #include <string>
 #include <sstream>
+#include <vector>
 // thread
 #include <thread>
 #include <atomic>
@@ -45,25 +46,36 @@ class Client {
   Client(std::shared_ptr<spdlog::logger>);
   ~Client();
 
+  // log system
+  std::stringstream logCaptureStream;
+  std::shared_ptr<spdlog::logger> logger;
+
   // database
   Database *db = nullptr;
 
   // user data
   User *user_info = nullptr;
+  std::vector<User> all_user;
 
   // function
   void run();
   void stop();
   void connect_to_server();
   void disconnect_to_server();
+  void set_log(std::string);
 
   // UI
+  bool exit_requested = false;
   void render();
   void render_patient_data();
+  // font
+  ImFont* opensans_reg_font;
+  ImFont* opensans_reg_font_s;
+  ImFont* opensans_reg_font_l;
 
  private:
-  // logger
-  std::shared_ptr<spdlog::logger> logger_;
+  // log
+  std::string log;
 
   // socket
   int m_server_socket;

@@ -8,6 +8,7 @@
 // == c++ system headers ==
 #include <string>
 #include <iostream>
+#include <vector>
 // ==   other headers    ==
 // spdlog
 #include "spdlog/spdlog.h"
@@ -29,10 +30,11 @@ class Database {
   // function
   void add_user(User*);
   void del_user();
+  std::vector<User> get_user();
   sqlite3 *db;
   char *zErrMsg = 0;
-  void open_database();
-  void close_database();
+  //void open_database();
+  //void close_database();
 
  private:
   // database
@@ -42,8 +44,8 @@ class Database {
   //char *zErrMsg = 0;
 
   // database function
-  // void open_database();
-  // void close_database();
+  void open_database();
+  void close_database();
 };
 
 #endif  // INCLUDE_DATABASE_H_

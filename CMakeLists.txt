@@ -6,7 +6,7 @@ project(bilt)
 
 # Define the source files
 set(SOURCE_SERVER src/main_server.cc src/server.cc)
-set(SOURCE_CLIENT src/client.cc src/database.cc)
+set(SOURCE_CLIENT src/main_client.cc src/client.cc src/database.cc)
 
 # Find the required libraries
 find_package(glfw3 REQUIRED)
