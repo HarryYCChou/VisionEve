@@ -91,26 +91,20 @@ void Database::add_user(User* u) {
 }
 
 std::vector<User> Database::get_user() {
-  sqlite3 *database = NULL;
   char *zErrMsg = 0;
   int rc;
-
-  /*FIXME 
-    workaround: database should reopen again,
-    *db value created in constructor can not be used,
-    or it will segmentation fault.
-  */
-  rc = sqlite3_open(db_name.c_str(), &database);
-
-  /* FIXME
-     logger has an issue when logger->info called
-  */
-
   std::vector<User> user_data;
 
   std::string sql_query = "SELECT ID, FIRST_NAME, LAST_NAME, AGE, GENDER, RACE, EYE_COLOR, MEDICAL_CONDITION, EYE_CONDITION, USER_NOTES FROM patients;";
-  //rc = sqlite3_exec(database, sql_query.c_str(), get_user_cb, &user_data, &zErrMsg);
-  sqlite3_close(database);
+
+  rc = sqlite3_exec(db, sql_query.c_str(), get_user_cb, &user_data, &zErrMsg);
+
+  if(rc!=SQLITE_OK) {
+    logger->error("function get_user error");
+    return user_data;
+  } else {
+    logger->info("get_user successfully");
+  }
 
   return user_data;  
 }

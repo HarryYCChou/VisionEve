@@ -22,6 +22,9 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
 
   // logger
   logger = l;
+
+  // database
+  db = new Database(l);
 }
 
 Client::~Client() {
@@ -34,6 +37,10 @@ void Client::run() {
 
 void Client::stop() {
 
+}
+
+void Client::update_all_user_info() {
+  all_user = db->get_user();
 }
 
 void Client::set_log(std::string l) {
@@ -70,6 +77,12 @@ void Client::send_cmd() {
   std::strcpy(msg, strInput.c_str());
   send(m_client_socket, msg, strlen(msg), 0);
   //}
+}
+
+void Client::render_all_user() {
+  for (std::vector<User>::iterator it = all_user.begin(); it!=all_user.end(); ++it) {
+    std::cout << it->id << std::endl;
+  }
 }
 
 void Client::render_patient_data() {

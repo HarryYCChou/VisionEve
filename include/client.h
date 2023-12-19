@@ -56,6 +56,7 @@ class Client {
   // user data
   User *user_info = nullptr;
   std::vector<User> all_user;
+  void update_all_user_info();
 
   // function
   void run();
@@ -67,6 +68,7 @@ class Client {
   // UI
   bool exit_requested = false;
   void render();
+  void render_all_user();
   void render_patient_data();
   // font
   ImFont* opensans_reg_font;

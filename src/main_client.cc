@@ -128,21 +128,11 @@ int main() {
   imgui_initialize();
 
   // initialize server
-  //Client* client = new Client(logger);
   Client* client = new Client(logger);
   client->opensans_reg_font = opensans_reg_font;
   client->opensans_reg_font_s = opensans_reg_font_s;
   client->opensans_reg_font_l = opensans_reg_font_l;
   client->run();
-
-  // initialize database
-  //Database* db = new Database(logger);
-  //User a;
-  //client->all_user.push_back(a);
-  //if ( client->db!=NULL)
-  //  client->db->get_user();
-  //else
-  //  std::cout << "client db is null" << std::endl;
 
   // main graphic loop
   while (!glfwWindowShouldClose(window)) {
