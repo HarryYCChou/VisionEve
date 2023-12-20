@@ -129,7 +129,7 @@ void Client::render_all_user() {
 
   // delete button
   if (ImGui::Button("delete")) {
-    db->del_user(u);
+    db->del_user(all_user[item_current_idx].id);
 
     // update patient list
     update_all_user_info();

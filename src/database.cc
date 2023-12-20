@@ -90,6 +90,25 @@ void Database::add_user(User* u) {
   sqlite3_close(database);
 }
 
+void Database::del_user(int id) {
+  char *zErrMsg = 0;
+  int rc;
+
+  std::string sql_query = "DELETE FROM " +
+                          table_name + " " +
+                          "WHERE ID = " + std::to_string(id) +
+                          ";";
+
+  rc = sqlite3_exec(db, sql_query.c_str(), NULL, NULL, &zErrMsg);
+
+  if(rc!=SQLITE_OK) {
+    logger->error("function del_user error");
+    return;
+  } else {
+    logger->info("del_user successfully");
+  }
+}
+
 std::vector<User> Database::get_user() {
   char *zErrMsg = 0;
   int rc;
