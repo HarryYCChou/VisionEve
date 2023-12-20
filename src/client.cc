@@ -119,6 +119,8 @@ void Client::render_all_user() {
 
   // load button
   if (ImGui::Button("load/edit")) {
+    // copy patient data to user_info
+    *user_info = all_user[item_current_idx];
   }
 
   ImGui::EndChild();
