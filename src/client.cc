@@ -176,9 +176,12 @@ void Client::render_patient_data() {
 
 void Client::render() {
     // main window
-    ImGui::SetNextWindowSize(ImVec2(1920, 1080));
-    ImGui::SetNextWindowPos(ImVec2(0,0));
-    ImGui::Begin("VisionEve Client", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
+    /* avoid resize and reset window position when rendering */
+    //ImGui::SetNextWindowSize(ImVec2(1920, 1080));
+    //ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::Begin("VisionEve Client", NULL, ImGuiWindowFlags_NoResize |
+                                           ImGuiWindowFlags_NoTitleBar |
+                                           ImGuiWindowFlags_NoMove);
 
 
     // patient list 
