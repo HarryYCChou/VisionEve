@@ -79,6 +79,9 @@ int imgui_initialize() {
       style.ChildRounding = 10.0f;
       style.FrameRounding = 10.0f;
       style.TabRounding = 10.0f;
+      style.ScrollbarRounding = 10.0f;
+      style.TabRounding = 10.0f;
+      style.GrabRounding = 10.0f;
       style.Colors[ImGuiCol_WindowBg].w = 1.0f;
   }
 
