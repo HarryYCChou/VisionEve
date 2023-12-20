@@ -71,7 +71,7 @@ void Database::add_user(User* u) {
   int rc;
 
   std::string sql_insert_data = std::string("INSERT INTO PATIENTS ") +
-"(FIRST_NAME, LAST_NAME, AGE, GENDER, RACE, EYE_COLOR, MEDICAL_CONDITION, EYE_CONDITION, USER_NOTES) " +"VALUES ('New', 'User', 0, 0, '', '', '', '', 'a');";
+"(FIRST_NAME, LAST_NAME, AGE, GENDER, RACE, EYE_COLOR, MEDICAL_CONDITION, EYE_CONDITION, USER_NOTES) " +"VALUES ('New', 'User', 0, 0, '', '', '', '', '');";
 
   rc = sqlite3_exec(db, sql_insert_data.c_str(), 0, 0, &zErrMsg);
 
