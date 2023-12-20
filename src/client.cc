@@ -25,6 +25,7 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
 
   // database
   db = new Database(l);
+  all_user = db->get_user();
 }
 
 Client::~Client() {
@@ -80,9 +81,47 @@ void Client::send_cmd() {
 }
 
 void Client::render_all_user() {
-  for (std::vector<User>::iterator it = all_user.begin(); it!=all_user.end(); ++it) {
-    std::cout << it->id << std::endl;
+  // user list
+  ImGui::BeginChild("UserList", ImVec2(400, 800), true);
+
+  // title
+  ImGui::PushFont(opensans_reg_font_l);
+  ImGui::Text("Patient List");
+  ImGui::PopFont();
+
+  static int item_current_idx = 0;
+  if (ImGui::BeginListBox("##PatientList")) {
+    for (int i = 0; i < all_user.size(); i++) {
+      const bool is_selected = (item_current_idx == i);
+     
+      std::ostringstream formattedString;
+      formattedString << "# " << std::setw(4) << std::setfill('0') << all_user[i].id;
+      formattedString << " | " << all_user[i].first_name << " " << all_user[i].last_name;
+      std::string list_name = formattedString.str();
+      //std::string list_name = std::to_string(all_user[i].id);
+      if (ImGui::Selectable(list_name.c_str(), is_selected))
+        item_current_idx = i;
+
+      if (is_selected)
+        ImGui::SetItemDefaultFocus(); 
+    }
+
+    ImGui::EndListBox();
   }
+
+  // new button
+  if (ImGui::Button("New")) {
+      User* u = new User();
+
+      db->add_user(u);
+  }
+  ImGui::SameLine();
+
+  // load button
+  if (ImGui::Button("load/edit")) {
+  }
+
+  ImGui::EndChild();
 }
 
 void Client::render_patient_data() {
@@ -141,13 +180,9 @@ void Client::render() {
     ImGui::SetNextWindowPos(ImVec2(0,0));
     ImGui::Begin("VisionEve Client", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
 
-    // button
-    if (ImGui::Button("New")) {
-        User* u = new User();
 
-        db->add_user(u);
-    }
-
+    // patient list 
+    render_all_user(); ImGui::SameLine();
     // patient data
     render_patient_data();
 
