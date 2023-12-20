@@ -82,7 +82,7 @@ void Client::send_cmd() {
 
 void Client::render_all_user() {
   // user list
-  ImGui::BeginChild("UserList", ImVec2(400, 800), true);
+  ImGui::BeginChild("PatientList", ImVec2(400, 800), true);
 
   // title
   ImGui::PushFont(opensans_reg_font_l);
@@ -90,7 +90,7 @@ void Client::render_all_user() {
   ImGui::PopFont();
 
   static int item_current_idx = 0;
-  if (ImGui::BeginListBox("##PatientList")) {
+  if (ImGui::BeginListBox("##PatientList", ImVec2(380,685))) {
     for (int i = 0; i < all_user.size(); i++) {
       const bool is_selected = (item_current_idx == i);
      
