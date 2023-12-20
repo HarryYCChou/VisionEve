@@ -20,8 +20,13 @@ static int get_user_cb(void* data, int argc, char** argv, char** colNames) {
     new_data.id = std::stoi(argv[0]);
     strcpy(new_data.first_name, argv[1]);
     strcpy(new_data.last_name, argv[2]);
-    //newData.name = argv[1];
-    //newData.value = std::stod(argv[2]);
+    new_data.gender = std::stoi(argv[3]);
+    new_data.age = std::stoi(argv[4]);
+    strcpy(new_data.race, argv[5]);
+    strcpy(new_data.eye_condition, argv[6]);
+    strcpy(new_data.medical_condition, argv[7]);
+    strcpy(new_data.eye_color, argv[8]);
+    strcpy(new_data.user_note, argv[9]);
 
     users->push_back(new_data);
 
@@ -62,32 +67,20 @@ void Database::close_database() {
 }
 
 void Database::add_user(User* u) {
-  sqlite3 *database=NULL;
   char *zErrMsg = 0;
   int rc;
 
-  /*FIXME 
-    workaround: database should reopen again,
-    *db value created in constructor can not be used,
-    or it will segmentation fault.
-  */
-  rc = sqlite3_open("./test.db", &database);
+  std::string sql_insert_data = std::string("INSERT INTO PATIENTS ") +
+"(FIRST_NAME, LAST_NAME, AGE, GENDER, RACE, EYE_COLOR, MEDICAL_CONDITION, EYE_CONDITION, USER_NOTES) " +"VALUES ('New', 'User', 0, 0, '', '', '', '', 'a');";
 
-  /* FIXME
-     logger has an issue when logger->info called
-  */
-  //if(rc!=SQLITE_OK) {
-  //  logger->warn("Can't open database");
-  //  return;
-  //} else {
-  //  std::cout << "OK3" << std::endl;
-  //  logger->info("Opened database successfully");
-  //  std::cout << "OK3" << std::endl;
-  //}
+  rc = sqlite3_exec(db, sql_insert_data.c_str(), 0, 0, &zErrMsg);
 
-  std::string sql_insert_data = "INSERT INTO PATIENTS (FIRST_NAME, LAST_NAME, AGE, GENDER, RACE, EYE_COLOR, MEDICAL_CONDITION, EYE_CONDITION, USER_NOTES) VALUES ('a', 'a', 0, 0, 'a', 'a', 'a', 'a', 'a');";
-  rc = sqlite3_exec(database, sql_insert_data.c_str(), 0, 0, &zErrMsg);
-  sqlite3_close(database);
+  if(rc!=SQLITE_OK) {
+    logger->error("function add_user error");
+    return;
+  } else {
+    logger->info("add_user successfully");
+  }
 }
 
 void Database::del_user(int id) {

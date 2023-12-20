@@ -29,7 +29,7 @@ class Database {
 
   // function
   void add_user(User*);
-  void del_user();
+  void del_user(int id);
   std::vector<User> get_user();
   sqlite3 *db;
   char *zErrMsg = 0;
