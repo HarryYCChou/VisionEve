@@ -114,6 +114,9 @@ void Client::render_all_user() {
       User* u = new User();
 
       db->add_user(u);
+
+      // update patient list
+      update_all_user_info();
   }
   ImGui::SameLine();
 
@@ -121,6 +124,15 @@ void Client::render_all_user() {
   if (ImGui::Button("load/edit")) {
     // copy patient data to user_info
     *user_info = all_user[item_current_idx];
+  }
+  ImGui::SameLine();
+
+  // delete button
+  if (ImGui::Button("delete")) {
+    db->del_user(u);
+
+    // update patient list
+    update_all_user_info();
   }
 
   ImGui::EndChild();
