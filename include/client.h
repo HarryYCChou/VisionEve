@@ -71,6 +71,7 @@ class Client {
   void render();
   void render_all_user();
   void render_patient_data();
+
   // font
   ImFont* opensans_reg_font;
   ImFont* opensans_reg_font_s;
