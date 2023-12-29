@@ -208,6 +208,18 @@ void Client::render_camera_data() {
     ImGui::EndChild();
 }
 
+void Client::render_lbs_control() {
+    // lbs control panel
+    ImGui::BeginChild("LBSControlChild", ImVec2(825, 285), true);
+    // title
+    ImGui::PushFont(opensans_reg_font_l);
+    ImGui::Text("LBS Control");
+
+    ImGui::PopFont();
+
+    ImGui::EndChild();
+}
+
 void Client::render() {
     // main window
     /* avoid resize and reset window position when rendering */
@@ -226,6 +238,10 @@ void Client::render() {
     // camera data
     ImGui::SetNextWindowPos(ImVec2(825, 10));
     render_camera_data();
+
+    // lbs control panel
+    ImGui::SetNextWindowPos(ImVec2(825, 520));
+    render_lbs_control();
 
     // Retrieve the captured log messages as a string
     ImGui::PushFont(opensans_reg_font_s);
