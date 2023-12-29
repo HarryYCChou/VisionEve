@@ -28,6 +28,9 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
   db = new Database(l);
   all_user = db->get_user();
 
+  // logo
+  textureID_logo = load_texture("../test_data/logo/renewoptics_logo.png");
+
   // FIXME: camera class
   textureID_L = load_texture("../test_data/eye_images/eye-sample-l.png");
   textureID_R = load_texture("../test_data/eye_images/eye-sample-r.png");
@@ -226,10 +229,31 @@ void Client::render_side_panel() {
     // title
     ImGui::PushFont(opensans_reg_font_l);
 
+    // logo
+    ImGui::Image((void*)(intptr_t)textureID_logo, ImVec2(235, 120));
+
+    // toolbox button
+    if (ImGui::Button("Function 1", ImVec2(235, 80))) {}
+    if (ImGui::Button("Function 2", ImVec2(235, 80))) {}
+    if (ImGui::Button("Function 3", ImVec2(235, 80))) {}
+    if (ImGui::Button("Function 4", ImVec2(235, 80))) {}
+    if (ImGui::Button("Function 5", ImVec2(235, 80))) {}
+    if (ImGui::Button("Function 6", ImVec2(235, 80))) {}
+    if (ImGui::Button("Function 7", ImVec2(235, 80))) {}
+    if (ImGui::Button("Function 8", ImVec2(235, 80))) {}
+    if (ImGui::Button("Function 9", ImVec2(235, 80))) {}
+    if (ImGui::Button("Function 10", ImVec2(235, 80))) {}
+
+    // Push a modified color for the specific button
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.5f, 0.2f, 0.0f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.3f, 0.9f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.3f, 0.1f, 0.7f, 1.0f));
     // exit button
-    if (ImGui::Button("Exit")) {
+    if (ImGui::Button("Exit", ImVec2(235, 80))) {
       exit_requested = true;
     }
+    // Pop the modified color after using it
+    ImGui::PopStyleColor(3); // Pop 3 times to revert all the changes made above
 
     ImGui::PopFont();
 

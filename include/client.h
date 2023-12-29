@@ -91,6 +91,9 @@ class Client {
   // log
   std::string log;
 
+  // logo
+  GLuint textureID_logo;
+
   // socket
   int m_server_socket;
   int m_client_socket;
