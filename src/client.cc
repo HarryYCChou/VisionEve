@@ -2,6 +2,7 @@
  * Copyright (c) 2023 Harry Chou
  */
 
+#define STB_IMAGE_IMPLEMENTATION
 #include "./client.h"
 
 Client::Client(std::shared_ptr<spdlog::logger> l) {
@@ -26,6 +27,10 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
   // database
   db = new Database(l);
   all_user = db->get_user();
+
+  // FIXME: camera class
+  textureID_L = load_texture("../test_data/eye_images/eye-sample-l.png");
+  textureID_R = load_texture("../test_data/eye_images/eye-sample-r.png");
 }
 
 Client::~Client() {
@@ -190,10 +195,14 @@ void Client::render_patient_data() {
 
 void Client::render_camera_data() {
     // camera data
-    ImGui::BeginChild("CameraDataChild", ImVec2(1080, 800), true);
+    ImGui::BeginChild("CameraDataChild", ImVec2(1080, 500), true);
     // title
     ImGui::PushFont(opensans_reg_font_l);
     ImGui::Text("Camera");
+
+    ImGui::Image((void*)(intptr_t)textureID_L, ImVec2(400, 400)); ImGui::SameLine();
+    ImGui::Image((void*)(intptr_t)textureID_R, ImVec2(400, 400));
+
     ImGui::PopFont();
 
     ImGui::EndChild();
@@ -215,6 +224,7 @@ void Client::render() {
     render_patient_data(); ImGui::SameLine();
 
     // camera data
+    ImGui::SetNextWindowPos(ImVec2(825, 300));
     render_camera_data();
 
     // Retrieve the captured log messages as a string
@@ -235,4 +245,32 @@ void Client::render() {
     }
 
     ImGui::End();
+}
+
+GLuint Client::load_texture(const char* filename) {
+    int width, height, channels;
+    unsigned char* data = stbi_load(filename, &width, &height, &channels, 0);
+    if (!data) {
+        // Handle error
+        return 0;
+    }
+
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    // Setup filtering parameters for display
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
+
+    // Upload pixels into texture
+#if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+#endif
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+    stbi_image_free(data);
+
+    return textureID;
 }

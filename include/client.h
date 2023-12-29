@@ -75,6 +75,11 @@ class Client {
   void render_patient_data();
   void render_camera_data();
 
+  // camera data
+  // FIXME: this section should be seperated to another class
+  GLuint textureID_L, textureID_R;
+  GLuint load_texture(const char*);
+
   // font
   ImFont* opensans_reg_font;
   ImFont* opensans_reg_font_s;
