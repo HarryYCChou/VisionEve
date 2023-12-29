@@ -75,6 +75,7 @@ class Client {
   void render_patient_data();
   void render_camera_data();
   void render_lbs_control();
+  void render_side_panel();
 
   // camera data
   // FIXME: this section should be seperated to another class

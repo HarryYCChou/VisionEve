@@ -220,6 +220,24 @@ void Client::render_lbs_control() {
     ImGui::EndChild();
 }
 
+void Client::render_side_panel() {
+    // side panel
+    ImGui::BeginChild("SidePanelChild", ImVec2(250, 1060), true);
+    // title
+    ImGui::PushFont(opensans_reg_font_l);
+
+    // exit button
+    if (ImGui::Button("Exit")) {
+      exit_requested = true;
+    }
+
+    ImGui::PopFont();
+
+    ImGui::EndChild();
+
+
+}
+
 void Client::render() {
     // main window
     /* avoid resize and reset window position when rendering */
@@ -243,22 +261,26 @@ void Client::render() {
     ImGui::SetNextWindowPos(ImVec2(825, 520));
     render_lbs_control();
 
+    // side panel
+    ImGui::SetNextWindowPos(ImVec2(1660, 10));
+    render_side_panel();
+
+    // log system
+    ImGui::SetNextWindowPos(ImVec2(8, 815));
     // Retrieve the captured log messages as a string
     ImGui::PushFont(opensans_reg_font_s);
-    ImGui::BeginChild("Log system", ImVec2(780, 100), true,
+    ImGui::BeginChild("Log system", ImVec2(1645, 255), true,
                         ImGuiWindowFlags_HorizontalScrollbar);
+    // title
+    ImGui::PushFont(opensans_reg_font_l);
     ImGui::Text("Log system");
-    //std::string capturedLogs = logCaptureStream.str();
-    //ImGui::TextUnformatted(capturedLogs.c_str());
+    ImGui::PopFont();
     ImGui::TextUnformatted(log.c_str());
     ImGui::SetScrollY(ImGui::GetScrollMaxY());
     ImGui::EndChild();
+
     ImGui::PopFont();
 
-    // exit button
-    if (ImGui::Button("Exit")) {
-      exit_requested = true;
-    }
 
     ImGui::End();
 }
