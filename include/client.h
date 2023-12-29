@@ -82,6 +82,10 @@ class Client {
   GLuint textureID_L, textureID_R;
   GLuint load_texture(const char*);
 
+  // LBS data
+  // FIXME: this section should be seperated to another class
+  GLuint textureID_LBS_L, textureID_LBS_R;
+
   // font
   ImFont* opensans_reg_font;
   ImFont* opensans_reg_font_s;

@@ -34,6 +34,10 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
   // FIXME: camera class
   textureID_L = load_texture("../test_data/eye_images/eye-sample-l.png");
   textureID_R = load_texture("../test_data/eye_images/eye-sample-r.png");
+
+  // FIXME: LBS class
+  textureID_LBS_L = load_texture("../test_data/lbs_content/eye_chart/L.png");
+  textureID_LBS_R = load_texture("../test_data/lbs_content/eye_chart/R.png");
 }
 
 Client::~Client() {
@@ -198,27 +202,41 @@ void Client::render_patient_data() {
 
 void Client::render_camera_data() {
     // camera data
-    ImGui::BeginChild("CameraDataChild", ImVec2(825, 500), true);
+    ImGui::BeginChild("CameraDataChild", ImVec2(825, 580), true);
     // title
     ImGui::PushFont(opensans_reg_font_l);
     ImGui::Text("Camera");
+    ImGui::PopFont();
 
+    ImGui::Text("Left camera device:"); ImGui::SameLine();
+    ImGui::Text("[This is a sample data, NOT live stream]");
+    ImGui::Text("Right camera device:"); ImGui::SameLine();
+    ImGui::Text("[This is a sample data, NOT live stream]");
     ImGui::Image((void*)(intptr_t)textureID_L, ImVec2(400, 400)); ImGui::SameLine();
     ImGui::Image((void*)(intptr_t)textureID_R, ImVec2(400, 400));
+    ImGui::Text("                                   L                                                                     R");
 
-    ImGui::PopFont();
 
     ImGui::EndChild();
 }
 
 void Client::render_lbs_control() {
     // lbs control panel
-    ImGui::BeginChild("LBSControlChild", ImVec2(825, 285), true);
+    ImGui::BeginChild("LBSControlChild", ImVec2(825, 470), true);
     // title
     ImGui::PushFont(opensans_reg_font_l);
     ImGui::Text("LBS Control");
-
     ImGui::PopFont();
+
+    ImGui::Text("");
+    // content
+    ImGui::Text("LBS Content: "); ImGui::SameLine();
+    ImGui::Text("Eye chart");
+    // L
+    ImGui::Image((void*)(intptr_t)textureID_LBS_L, ImVec2(400, 200)); ImGui::SameLine();
+    // R
+    ImGui::Image((void*)(intptr_t)textureID_LBS_R, ImVec2(400, 200));
+    ImGui::Text("                                   L                                                                     R");
 
     ImGui::EndChild();
 }
@@ -282,7 +300,7 @@ void Client::render() {
     render_camera_data();
 
     // lbs control panel
-    ImGui::SetNextWindowPos(ImVec2(825, 520));
+    ImGui::SetNextWindowPos(ImVec2(825, 600));
     render_lbs_control();
 
     // side panel
@@ -293,7 +311,7 @@ void Client::render() {
     ImGui::SetNextWindowPos(ImVec2(8, 815));
     // Retrieve the captured log messages as a string
     ImGui::PushFont(opensans_reg_font_s);
-    ImGui::BeginChild("Log system", ImVec2(1645, 255), true,
+    ImGui::BeginChild("Log system", ImVec2(810, 255), true,
                         ImGuiWindowFlags_HorizontalScrollbar);
     // title
     ImGui::PushFont(opensans_reg_font_l);
