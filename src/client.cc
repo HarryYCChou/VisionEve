@@ -195,7 +195,7 @@ void Client::render_patient_data() {
 
 void Client::render_camera_data() {
     // camera data
-    ImGui::BeginChild("CameraDataChild", ImVec2(1080, 500), true);
+    ImGui::BeginChild("CameraDataChild", ImVec2(825, 500), true);
     // title
     ImGui::PushFont(opensans_reg_font_l);
     ImGui::Text("Camera");
@@ -224,7 +224,7 @@ void Client::render() {
     render_patient_data(); ImGui::SameLine();
 
     // camera data
-    ImGui::SetNextWindowPos(ImVec2(825, 300));
+    ImGui::SetNextWindowPos(ImVec2(825, 10));
     render_camera_data();
 
     // Retrieve the captured log messages as a string
