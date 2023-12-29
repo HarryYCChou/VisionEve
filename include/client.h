@@ -33,6 +33,8 @@
 // spdlog
 #include "spdlog/spdlog.h"
 #include <spdlog/sinks/ostream_sink.h>
+// stb_image
+#include "stb/stb_image.h"
 // user
 #include "./user.h"
 // database
