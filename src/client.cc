@@ -188,6 +188,17 @@ void Client::render_patient_data() {
     ImGui::EndChild();
 }
 
+void Client::render_camera_data() {
+    // camera data
+    ImGui::BeginChild("CameraDataChild", ImVec2(1080, 800), true);
+    // title
+    ImGui::PushFont(opensans_reg_font_l);
+    ImGui::Text("Camera");
+    ImGui::PopFont();
+
+    ImGui::EndChild();
+}
+
 void Client::render() {
     // main window
     /* avoid resize and reset window position when rendering */
@@ -201,7 +212,10 @@ void Client::render() {
     // patient list 
     render_all_user(); ImGui::SameLine();
     // patient data
-    render_patient_data();
+    render_patient_data(); ImGui::SameLine();
+
+    // camera data
+    render_camera_data();
 
     // Retrieve the captured log messages as a string
     ImGui::PushFont(opensans_reg_font_s);
