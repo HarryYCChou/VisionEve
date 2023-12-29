@@ -230,7 +230,7 @@ void Client::render_side_panel() {
     ImGui::PushFont(opensans_reg_font_l);
 
     // logo
-    ImGui::Image((void*)(intptr_t)textureID_logo, ImVec2(235, 120));
+    ImGui::Image((void*)(intptr_t)textureID_logo, ImVec2(235, 200));
 
     // toolbox button
     if (ImGui::Button("Function 1", ImVec2(235, 80))) {}
@@ -242,7 +242,7 @@ void Client::render_side_panel() {
     if (ImGui::Button("Function 7", ImVec2(235, 80))) {}
     if (ImGui::Button("Function 8", ImVec2(235, 80))) {}
     if (ImGui::Button("Function 9", ImVec2(235, 80))) {}
-    if (ImGui::Button("Function 10", ImVec2(235, 80))) {}
+    //if (ImGui::Button("Function 10", ImVec2(235, 80))) {}
 
     // Push a modified color for the specific button
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.5f, 0.2f, 0.0f, 1.0f));
