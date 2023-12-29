@@ -208,9 +208,9 @@ void Client::render_camera_data() {
     ImGui::Text("Camera");
     ImGui::PopFont();
 
-    ImGui::Text("Left camera device:"); ImGui::SameLine();
+    ImGui::Text("Left camera device : "); ImGui::SameLine();
     ImGui::Text("[This is a sample data, NOT live stream]");
-    ImGui::Text("Right camera device:"); ImGui::SameLine();
+    ImGui::Text("Right camera device: "); ImGui::SameLine();
     ImGui::Text("[This is a sample data, NOT live stream]");
     ImGui::Image((void*)(intptr_t)textureID_L, ImVec2(400, 400)); ImGui::SameLine();
     ImGui::Image((void*)(intptr_t)textureID_R, ImVec2(400, 400));
@@ -228,7 +228,18 @@ void Client::render_lbs_control() {
     ImGui::Text("LBS Control");
     ImGui::PopFont();
 
-    ImGui::Text("");
+    // LBS control
+    // brightness
+    ImGui::BeginDisabled(true);
+    ImGui::Text("Brightness : "); ImGui::SameLine();
+    ImGui::SetNextItemWidth(670.0f);
+    ImGui::SliderInt("##Brightness", &lbs_brightness, 0, 100);
+    // contrast
+    ImGui::Text("Contrast     : "); ImGui::SameLine();
+    ImGui::SetNextItemWidth(670.0f);
+    ImGui::SliderInt("##Contrast", &lbs_contrast, 0, 100);
+    ImGui::EndDisabled(); 
+
     // content
     ImGui::Text("LBS Content: "); ImGui::SameLine();
     ImGui::Text("Eye chart");
@@ -237,6 +248,7 @@ void Client::render_lbs_control() {
     // R
     ImGui::Image((void*)(intptr_t)textureID_LBS_R, ImVec2(400, 200));
     ImGui::Text("                                   L                                                                     R");
+
 
     ImGui::EndChild();
 }

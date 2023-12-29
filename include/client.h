@@ -85,6 +85,8 @@ class Client {
   // LBS data
   // FIXME: this section should be seperated to another class
   GLuint textureID_LBS_L, textureID_LBS_R;
+  int lbs_brightness = 43;
+  int lbs_contrast = 87;
 
   // font
   ImFont* opensans_reg_font;
