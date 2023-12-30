@@ -300,6 +300,22 @@ void Client::render_side_panel() {
 
 }
 
+void Client::render_lbs_content() {
+    // LBS content L
+    ImGui::Begin("LBS_L", NULL, ImGuiWindowFlags_NoResize |
+                                           ImGuiWindowFlags_NoTitleBar |
+                                           ImGuiWindowFlags_NoMove);
+    ImGui::Image((void*)(intptr_t)textureID_LBS_L, ImVec2(1024, 600));
+    ImGui::End();
+
+    // LBS content R
+    ImGui::Begin("LBS_R", NULL, ImGuiWindowFlags_NoResize |
+                                           ImGuiWindowFlags_NoTitleBar |
+                                           ImGuiWindowFlags_NoMove);
+    ImGui::Image((void*)(intptr_t)textureID_LBS_L, ImVec2(1024, 600));
+    ImGui::End();
+}
+
 void Client::render() {
     // main window
     /* avoid resize and reset window position when rendering */
@@ -342,6 +358,9 @@ void Client::render() {
     ImGui::EndChild();
 
     ImGui::PopFont();
+
+    // LBS render
+    render_lbs_content();
 
 
     ImGui::End();

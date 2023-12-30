@@ -87,6 +87,8 @@ class Client {
   GLuint textureID_LBS_L, textureID_LBS_R;
   int lbs_brightness = 43;
   int lbs_contrast = 87;
+  // LBS content
+  void render_lbs_content();
 
   // font
   ImFont* opensans_reg_font;
