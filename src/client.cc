@@ -197,6 +197,14 @@ void Client::render_patient_data() {
     ImGui::Text("User note:");
     ImGui::InputTextMultiline("##UserNote", user_info->user_note, sizeof(user_info->user_note), ImVec2(370.0f, 100.0f));
 
+    // save button
+    if (ImGui::Button("Save")) {
+      db->update_user(user_info);
+
+      // update patient list
+      update_all_user_info();
+    }
+
     ImGui::EndChild();
 }
 

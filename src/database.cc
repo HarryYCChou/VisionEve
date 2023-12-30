@@ -23,9 +23,9 @@ static int get_user_cb(void* data, int argc, char** argv, char** colNames) {
     new_data.gender = std::stoi(argv[3]);
     new_data.age = std::stoi(argv[4]);
     strcpy(new_data.race, argv[5]);
-    strcpy(new_data.eye_condition, argv[6]);
+    strcpy(new_data.eye_color, argv[6]);
     strcpy(new_data.medical_condition, argv[7]);
-    strcpy(new_data.eye_color, argv[8]);
+    strcpy(new_data.eye_condition, argv[8]);
     strcpy(new_data.user_note, argv[9]);
 
     users->push_back(new_data);
@@ -99,6 +99,37 @@ void Database::del_user(int id) {
     return;
   } else {
     logger->info("del_user successfully");
+  }
+}
+
+void Database::update_user(User* u) {
+  char *zErrMsg = 0;
+  int rc;
+
+  //std::string sql_insert_data = std::string("INSERT INTO PATIENTS ") +
+//"(FIRST_NAME, LAST_NAME, AGE, GENDER, RACE, EYE_COLOR, MEDICAL_CONDITION, EYE_CONDITION, USER_NOTES) " +"VALUES ('New', 'User', 0, 0, '', '', '', '', '');";
+  
+  std::string sql_insert_data = std::string("UPDATE PATIENTS ") +
+  std::string("SET FIRST_NAME = '") + u->first_name + std::string("',") +
+  std::string("LAST_NAME = '") + u->last_name + std::string("',") +
+  std::string("AGE = '") + std::to_string(u->age) + std::string("',") +
+  std::string("GENDER = '") + std::to_string(u->gender) + std::string("',") +
+  std::string("RACE = '") + u->race + std::string("',") +
+  std::string("EYE_COLOR = '") + u->eye_color + std::string("',") +
+  std::string("MEDICAL_CONDITION = '") + u->medical_condition + std::string("',") +
+  std::string("EYE_CONDITION = '") + u->eye_condition + std::string("',") +
+  std::string("USER_NOTES = '") + u->user_note + std::string("'") +
+  std::string("WHERE ID = ") + std::to_string(u->id) + std::string(";");
+
+//, LAST_NAME, AGE, GENDER, RACE, EYE_COLOR, MEDICAL_CONDITION, EYE_CONDITION, USER_NOTES) " +"VALUES ('New', 'User', 0, 0, '', '', '', '', '');";
+
+  rc = sqlite3_exec(db, sql_insert_data.c_str(), 0, 0, &zErrMsg);
+
+  if(rc!=SQLITE_OK) {
+    logger->error("function update_user error");
+    return;
+  } else {
+    logger->info("update_user successfully");
   }
 }
 
