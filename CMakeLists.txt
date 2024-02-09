@@ -5,14 +5,19 @@ cmake_minimum_required(VERSION 3.12)
 project(bilt)
 
 # Define the source files
-set(SOURCE_SERVER src/main_server.cc src/server.cc)
-set(SOURCE_CLIENT src/main_client.cc src/client.cc src/database.cc)
+set(SOURCE_SERVER src/main_server.cc
+                  src/server.cc)
+set(SOURCE_CLIENT src/main_client.cc
+                  src/client.cc
+                  src/database.cc
+                  src/camera/camera.cc)
 
 # Find the required libraries
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(SQLite3 REQUIRED)
+find_package(OpenCV REQUIRED)
 
 # add ImGui library
 add_subdirectory(lib/imgui)
@@ -42,6 +47,8 @@ target_link_libraries(client PRIVATE OpenGL::GL)
 target_link_libraries(client PRIVATE imgui)
 # Link spdlog to the executable
 target_link_libraries(client PRIVATE spdlog::spdlog)
+# Link OpenCV to the executable
+target_link_libraries(client PRIVATE ${OpenCV_LIBS})
 # Link sqlite to the executable
 target_link_libraries(client PRIVATE sqlite3)
 # add header folder

@@ -39,6 +39,8 @@
 #include "./user.h"
 // database
 #include "./database.h"
+// camera
+#include "camera/camera.h"
 
 // port
 #define PORT 62453
@@ -55,6 +57,11 @@ class Client {
 
   // database
   Database *db = nullptr;
+
+  // camera
+  Camera *cam_L = nullptr;
+  Camera *cam_R = nullptr;
+  Mat image_buf;
 
   // user data
   User *user_info = nullptr;
@@ -78,8 +85,9 @@ class Client {
   void render_side_panel();
 
   // camera data
-  // FIXME: this section should be seperated to another class
   GLuint textureID_L, textureID_R;
+  GLuint textureID_CamL, textureID_CamR;
+  void load_texture(GLuint&, Mat&);
   GLuint load_texture(const char*);
 
   // LBS data

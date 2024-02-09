@@ -8,7 +8,7 @@ Use cpplint with filter
 example: cpplint --filter=-build/c++11
 
 ## Pre-requirements
-sudo apt install libglfw3 libglfw3-dev libspdlog-dev libsqlite3-dev
+sudo apt install libglfw3 libglfw3-dev libspdlog-dev libsqlite3-dev libopencv-dev
 
 ## Build
 mkdir build

@@ -28,6 +28,14 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
   db = new Database(l);
   all_user = db->get_user();
 
+  // camera
+  glGenTextures(1, &textureID_CamL);
+  glGenTextures(1, &textureID_CamR);
+  cam_L = new Camera(0, l);
+  cam_L->run();
+  cam_R = new Camera(1, l);
+  cam_R->run();
+
   // logo
   textureID_logo = load_texture("../test_data/logo/renewoptics_logo.png");
 
@@ -41,7 +49,8 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
 }
 
 Client::~Client() {
-
+  delete cam_L;
+  delete cam_R;
 }
 
 void Client::run() {
@@ -217,13 +226,26 @@ void Client::render_camera_data() {
     ImGui::PopFont();
 
     ImGui::Text("Left camera device : "); ImGui::SameLine();
-    ImGui::Text("[This is a sample data, NOT live stream]");
+    ImGui::Text("/dev/video0");
     ImGui::Text("Right camera device: "); ImGui::SameLine();
-    ImGui::Text("[This is a sample data, NOT live stream]");
-    ImGui::Image((void*)(intptr_t)textureID_L, ImVec2(400, 400)); ImGui::SameLine();
-    ImGui::Image((void*)(intptr_t)textureID_R, ImVec2(400, 400));
+    ImGui::Text("/dev/video1");
+    // get image from camera
+    // try camera L
+    if (cam_L->get_image(image_buf)) {
+      load_texture(textureID_CamL, image_buf);
+      ImGui::Image((void*)(intptr_t)textureID_CamL, ImVec2(400, 400));
+    } else {
+      ImGui::Image((void*)(intptr_t)textureID_L, ImVec2(400, 400));
+    }
+    ImGui::SameLine();
+    // try camera R
+    if (cam_R->get_image(image_buf)) {
+      load_texture(textureID_CamR, image_buf);
+      ImGui::Image((void*)(intptr_t)textureID_CamR, ImVec2(400, 400));
+    } else {
+      ImGui::Image((void*)(intptr_t)textureID_R, ImVec2(400, 400));
+    }
     ImGui::Text("                                   L                                                                     R");
-
 
     ImGui::EndChild();
 }
@@ -364,6 +386,19 @@ void Client::render() {
 
 
     ImGui::End();
+}
+
+void Client::load_texture(GLuint& textureID, Mat& image) {
+  // convert image format
+  cv::cvtColor(image, image, cv::COLOR_BGR2RGBA);
+  // glGenTextures(1, &textureID);
+  glBindTexture(GL_TEXTURE_2D, textureID);
+  // Setup filtering parameters for display
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.cols, image.rows,
+                0, GL_RGBA, GL_UNSIGNED_BYTE, image.data);
 }
 
 GLuint Client::load_texture(const char* filename) {
