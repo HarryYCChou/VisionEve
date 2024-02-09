@@ -28,7 +28,7 @@ using cv::Mat;
 class Camera {
  public:
   // constructor
-  Camera(int, std::shared_ptr<spdlog::logger>);
+  Camera(int, int, std::shared_ptr<spdlog::logger>);
   ~Camera();
 
   // log system
@@ -37,7 +37,7 @@ class Camera {
   // function
   void run();
   void stop();
-  bool get_image(Mat&);
+  bool get_image(int, Mat&);
   void set_log(std::string);
 
  private:
@@ -45,12 +45,17 @@ class Camera {
   std::string log;
 
   // VideoCapture
-  int camera_n = 0;
-  bool isOpened = false;
-  VideoCapture cap;
+  int camera_n_l= 0;
+  int camera_n_r= 0;
+  bool isOpened_l = false;
+  bool isOpened_r = false;
+  VideoCapture cap_l;
+  VideoCapture cap_r;
   int buffer_size = 10;
-  Mat *image_buffer;
-  int buffer_index = 0;
+  Mat *image_buffer_l;
+  Mat *image_buffer_r;
+  int buffer_index_l = 0;
+  int buffer_index_r = 0;
   void capture();
 
   // thread

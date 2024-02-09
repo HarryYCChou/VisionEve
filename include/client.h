@@ -59,8 +59,8 @@ class Client {
   Database *db = nullptr;
 
   // camera
-  Camera *cam_L = nullptr;
-  Camera *cam_R = nullptr;
+  Camera *cam = nullptr;
+  //Camera *cam_R = nullptr;
   Mat image_buf;
 
   // user data

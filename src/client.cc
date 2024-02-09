@@ -31,10 +31,8 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
   // camera
   glGenTextures(1, &textureID_CamL);
   glGenTextures(1, &textureID_CamR);
-  cam_L = new Camera(0, l);
-  cam_L->run();
-  cam_R = new Camera(1, l);
-  cam_R->run();
+  cam = new Camera(0, 2, l);
+  cam->run();
 
   // logo
   textureID_logo = load_texture("../test_data/logo/renewoptics_logo.png");
@@ -49,8 +47,9 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
 }
 
 Client::~Client() {
-  delete cam_L;
-  delete cam_R;
+  delete cam;
+  //delete cam_L;
+  //delete cam_R;
 }
 
 void Client::run() {
@@ -231,7 +230,7 @@ void Client::render_camera_data() {
     ImGui::Text("/dev/video1");
     // get image from camera
     // try camera L
-    if (cam_L->get_image(image_buf)) {
+    if (cam->get_image(0, image_buf) && (!image_buf.empty())) {
       load_texture(textureID_CamL, image_buf);
       ImGui::Image((void*)(intptr_t)textureID_CamL, ImVec2(400, 400));
     } else {
@@ -239,7 +238,7 @@ void Client::render_camera_data() {
     }
     ImGui::SameLine();
     // try camera R
-    if (cam_R->get_image(image_buf)) {
+    if (cam->get_image(1, image_buf) && (!image_buf.empty())) {
       load_texture(textureID_CamR, image_buf);
       ImGui::Image((void*)(intptr_t)textureID_CamR, ImVec2(400, 400));
     } else {
