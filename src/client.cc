@@ -185,19 +185,19 @@ void Client::render_patient_data() {
     ImGui::InputInt("##Age", &user_info->age);
     // gender
     ImGui::Text("Gender:"); ImGui::SameLine(input_offset);
-    ImGui::RadioButton("male", &user_info->gender, 0); ImGui::SameLine(input_offset+120);
-    ImGui::RadioButton("female", &user_info->gender, 1);
-    // race
-    ImGui::Text("Race:"); ImGui::SameLine(input_offset);
     ImGui::SetNextItemWidth(input_width);
+    ImGui::InputText("##Gender", user_info->race, IM_ARRAYSIZE(user_info->race));
+    // race
+    ImGui::Text("Race/Ethnicity:"); ImGui::SameLine(input_offset + 20);
+    ImGui::SetNextItemWidth(input_width - 20);
     ImGui::InputText("##Race", user_info->race, IM_ARRAYSIZE(user_info->race));
     // eye color
     ImGui::Text("Eye color:"); ImGui::SameLine(input_offset);
     ImGui::SetNextItemWidth(input_width);
     ImGui::InputText("##EyeColor", user_info->eye_color, IM_ARRAYSIZE(user_info->eye_color));
     // medical condition
-    ImGui::Text("Medical Condition:");
-    ImGui::InputTextMultiline("##MedicalCondition", user_info->medical_condition, sizeof(user_info->medical_condition), ImVec2(370.0f, 100.0f));
+    //ImGui::Text("Medical Condition:");
+    //ImGui::InputTextMultiline("##MedicalCondition", user_info->medical_condition, sizeof(user_info->medical_condition), ImVec2(370.0f, 100.0f));
     // eye condition
     ImGui::Text("Eye condition:");
     ImGui::InputTextMultiline("##EyeCondition", user_info->eye_condition, sizeof(user_info->eye_condition), ImVec2(370.0f, 100.0f));
@@ -206,7 +206,8 @@ void Client::render_patient_data() {
     ImGui::InputTextMultiline("##UserNote", user_info->user_note, sizeof(user_info->user_note), ImVec2(370.0f, 100.0f));
 
     // save button
-    if (ImGui::Button("Save")) {
+    ImGui::SetCursorPos(ImVec2(5, 740));
+    if (ImGui::Button("Save", ImVec2(390, 35))) {
       db->update_user(user_info);
 
       // update patient list
@@ -227,7 +228,7 @@ void Client::render_camera_data() {
     ImGui::Text("Left camera device : "); ImGui::SameLine();
     ImGui::Text("/dev/video0");
     ImGui::Text("Right camera device: "); ImGui::SameLine();
-    ImGui::Text("/dev/video1");
+    ImGui::Text("/dev/video2");
     // get image from camera
     // try camera L
     if (cam->get_image(0, image_buf) && (!image_buf.empty())) {
@@ -259,15 +260,15 @@ void Client::render_lbs_control() {
 
     // LBS control
     // brightness
-    ImGui::BeginDisabled(true);
-    ImGui::Text("Brightness : "); ImGui::SameLine();
-    ImGui::SetNextItemWidth(670.0f);
-    ImGui::SliderInt("##Brightness", &lbs_brightness, 0, 100);
+    //ImGui::BeginDisabled(true);
+    //ImGui::Text("Brightness : "); ImGui::SameLine();
+    //ImGui::SetNextItemWidth(670.0f);
+    //ImGui::SliderInt("##Brightness", &lbs_brightness, 0, 100);
     // contrast
-    ImGui::Text("Contrast     : "); ImGui::SameLine();
-    ImGui::SetNextItemWidth(670.0f);
-    ImGui::SliderInt("##Contrast", &lbs_contrast, 0, 100);
-    ImGui::EndDisabled(); 
+    //ImGui::Text("Contrast     : "); ImGui::SameLine();
+    //ImGui::SetNextItemWidth(670.0f);
+    //ImGui::SliderInt("##Contrast", &lbs_contrast, 0, 100);
+    //ImGui::EndDisabled(); 
 
     // content
     ImGui::Text("LBS Content: "); ImGui::SameLine();
@@ -292,6 +293,7 @@ void Client::render_side_panel() {
     ImGui::Image((void*)(intptr_t)textureID_logo, ImVec2(235, 200));
 
     // toolbox button
+    /*
     if (ImGui::Button("Function 1", ImVec2(235, 80))) {}
     if (ImGui::Button("Function 2", ImVec2(235, 80))) {}
     if (ImGui::Button("Function 3", ImVec2(235, 80))) {}
@@ -301,13 +303,14 @@ void Client::render_side_panel() {
     if (ImGui::Button("Function 7", ImVec2(235, 80))) {}
     if (ImGui::Button("Function 8", ImVec2(235, 80))) {}
     if (ImGui::Button("Function 9", ImVec2(235, 80))) {}
-    //if (ImGui::Button("Function 10", ImVec2(235, 80))) {}
+    */
 
     // Push a modified color for the specific button
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.5f, 0.2f, 0.0f, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.3f, 0.9f, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.3f, 0.1f, 0.7f, 1.0f));
     // exit button
+    ImGui::SetCursorPos(ImVec2(0, 960));
     if (ImGui::Button("Exit", ImVec2(235, 80))) {
       exit_requested = true;
     }
@@ -323,6 +326,7 @@ void Client::render_side_panel() {
 
 void Client::render_lbs_content() {
     // LBS content L
+    ImGui::SetNextWindowSize(ImVec2(1920, 0));
     ImGui::Begin("LBS_L", NULL, ImGuiWindowFlags_NoResize |
                                            ImGuiWindowFlags_NoTitleBar |
                                            ImGuiWindowFlags_NoMove);
@@ -330,6 +334,7 @@ void Client::render_lbs_content() {
     ImGui::End();
 
     // LBS content R
+    ImGui::SetNextWindowSize(ImVec2(3000, 0));
     ImGui::Begin("LBS_R", NULL, ImGuiWindowFlags_NoResize |
                                            ImGuiWindowFlags_NoTitleBar |
                                            ImGuiWindowFlags_NoMove);
