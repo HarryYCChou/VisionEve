@@ -44,6 +44,13 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
   // FIXME: LBS class
   textureID_LBS_L = load_texture("../test_data/lbs_content/eye_chart/L.png");
   textureID_LBS_R = load_texture("../test_data/lbs_content/eye_chart/R.png");
+  // for vertical flip
+  cv::Mat image = cv::imread("../test_data/lbs_content/eye_chart/L.png");
+  cv::flip(image, image, 0); 
+  load_texture(textureID_LBS_VF_L, image);
+  image = cv::imread("../test_data/lbs_content/eye_chart/R.png");
+  cv::flip(image, image, 0); 
+  load_texture(textureID_LBS_VF_R, image);
 
   // detect number of monitor
   Display* display = XOpenDisplay(nullptr);
@@ -280,7 +287,9 @@ void Client::render_lbs_control() {
     //ImGui::Text("Contrast     : "); ImGui::SameLine();
     //ImGui::SetNextItemWidth(670.0f);
     //ImGui::SliderInt("##Contrast", &lbs_contrast, 0, 100);
-    //ImGui::EndDisabled(); 
+    //ImGui::EndDisabled();
+    ImGui::Checkbox("Vertical flip LBS content: ", &vertical_flip);
+    ImGui::Text(" ");
 
     // content
     ImGui::Text("LBS Content: "); ImGui::SameLine();
@@ -345,7 +354,11 @@ void Client::render_lbs_content() {
     ImGui::Begin("LBS_L", NULL, ImGuiWindowFlags_NoResize |
                                            ImGuiWindowFlags_NoTitleBar |
                                            ImGuiWindowFlags_NoMove);
-    ImGui::Image((void*)(intptr_t)textureID_LBS_L, ImVec2(1024, 600));
+    if (vertical_flip) {
+      ImGui::Image((void*)(intptr_t)textureID_LBS_VF_L, ImVec2(1024, 600));
+    } else {
+      ImGui::Image((void*)(intptr_t)textureID_LBS_L, ImVec2(1024, 600));
+    }
     ImGui::End();
 
     // LBS content R
@@ -353,7 +366,11 @@ void Client::render_lbs_content() {
     ImGui::Begin("LBS_R", NULL, ImGuiWindowFlags_NoResize |
                                            ImGuiWindowFlags_NoTitleBar |
                                            ImGuiWindowFlags_NoMove);
-    ImGui::Image((void*)(intptr_t)textureID_LBS_L, ImVec2(1024, 600));
+    if (vertical_flip) {
+      ImGui::Image((void*)(intptr_t)textureID_LBS_VF_R, ImVec2(1024, 600));
+    } else {
+      ImGui::Image((void*)(intptr_t)textureID_LBS_R, ImVec2(1024, 600));
+    }
     ImGui::End();
 }
 

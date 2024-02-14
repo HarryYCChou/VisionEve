@@ -85,6 +85,7 @@ class Client {
   void render_camera_data();
   void render_lbs_control();
   void render_side_panel();
+  bool vertical_flip = true;
 
   // camera data
   GLuint textureID_L, textureID_R;
@@ -96,6 +97,7 @@ class Client {
   // FIXME: this section should be seperated to another class
   int n_of_monitor = 0;
   GLuint textureID_LBS_L, textureID_LBS_R;
+  GLuint textureID_LBS_VF_L, textureID_LBS_VF_R;
   int lbs_brightness = 43;
   int lbs_contrast = 87;
   // LBS content
