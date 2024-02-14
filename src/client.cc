@@ -144,6 +144,11 @@ void Client::render_all_user() {
   if (ImGui::Button("load/edit")) {
     // copy patient data to user_info
     *user_info = all_user[item_current_idx];
+    if (strcmp(user_info->first_name, "New") == 0
+        && strcmp(user_info->last_name, "User") == 0) {
+      std::strcpy(user_info->first_name, "");
+      std::strcpy(user_info->last_name, "");
+    } 
   }
   ImGui::SameLine();
 
