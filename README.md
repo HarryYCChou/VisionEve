@@ -11,7 +11,9 @@ example: cpplint --filter=-build/c++11
 sudo apt install libglfw3 libglfw3-dev libspdlog-dev libsqlite3-dev libopencv-dev
 
 ## Build
+```sh
 mkdir build
 cd build
 cmake ..
 make
+```
