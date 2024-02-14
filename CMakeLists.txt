@@ -55,3 +55,13 @@ target_link_libraries(client PRIVATE sqlite3)
 target_include_directories(client PRIVATE ${CMAKE_SOURCE_DIR}/include)
 # add ImGui header folder
 target_include_directories(client PRIVATE ${CMAKE_SOURCE_DIR}/lib)
+
+# copy imgui config file
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/build/imgui.ini")
+    configure_file("${CMAKE_SOURCE_DIR}/test_data/imgui.ini" "${CMAKE_SOURCE_DIR}/build/imgui.ini" COPYONLY)
+endif()
+
+# copy default database file
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/build/test.db")
+    configure_file("${CMAKE_SOURCE_DIR}/test_data/test.db" "${CMAKE_SOURCE_DIR}/build/test.db" COPYONLY)
+endif()
