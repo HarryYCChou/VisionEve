@@ -51,6 +51,8 @@ target_link_libraries(client PRIVATE spdlog::spdlog)
 target_link_libraries(client PRIVATE ${OpenCV_LIBS})
 # Link sqlite to the executable
 target_link_libraries(client PRIVATE sqlite3)
+# Link sqlite to the executable
+target_link_libraries(client PRIVATE X11)
 # add header folder
 target_include_directories(client PRIVATE ${CMAKE_SOURCE_DIR}/include)
 # add ImGui header folder

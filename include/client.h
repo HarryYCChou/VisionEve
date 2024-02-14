@@ -41,6 +41,8 @@
 #include "./database.h"
 // camera
 #include "camera/camera.h"
+// X11
+#include <X11/Xlib.h>
 
 // port
 #define PORT 62453
@@ -92,6 +94,7 @@ class Client {
 
   // LBS data
   // FIXME: this section should be seperated to another class
+  int n_of_monitor = 0;
   GLuint textureID_LBS_L, textureID_LBS_R;
   int lbs_brightness = 43;
   int lbs_contrast = 87;

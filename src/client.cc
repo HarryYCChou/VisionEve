@@ -44,6 +44,11 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
   // FIXME: LBS class
   textureID_LBS_L = load_texture("../test_data/lbs_content/eye_chart/L.png");
   textureID_LBS_R = load_texture("../test_data/lbs_content/eye_chart/R.png");
+
+  // detect number of monitor
+  Display* display = XOpenDisplay(nullptr);
+  n_of_monitor = XScreenCount(display);
+  XCloseDisplay(display);
 }
 
 Client::~Client() {
@@ -332,6 +337,9 @@ void Client::render_side_panel() {
 }
 
 void Client::render_lbs_content() {
+    // if LBS doen not connected
+    if (n_of_monitor < 3) return;
+
     // LBS content L
     ImGui::SetNextWindowSize(ImVec2(1920, 0));
     ImGui::Begin("LBS_L", NULL, ImGuiWindowFlags_NoResize |
