@@ -22,6 +22,7 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
+#include <filesystem>
 // thread
 #include <thread>
 #include <atomic>
@@ -47,6 +48,8 @@
 
 // port
 #define PORT 62453
+
+namespace fs = std::filesystem;
 
 class Client {
  public:

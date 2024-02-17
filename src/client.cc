@@ -183,6 +183,12 @@ void Client::render_all_user() {
 
   // export button
   if (ImGui::Button("Export")) {
+    if (!fs::exists("../export")) {
+      fs::create_directory("../export");
+      //std::cout << "Folder created successfully!" << std::endl;
+    } else {
+      //std::cout << "Folder already exists." << std::endl;
+    }
     for (int i = 0; i < all_user.size(); i++) {
       std::string f_name = "../export/" + std::to_string(all_user[i].id) + ".csv";
       std::ofstream file(f_name, std::ios::out);
