@@ -228,7 +228,7 @@ void Client::render_patient_data() {
     // gender
     ImGui::Text("Gender:"); ImGui::SameLine(input_offset);
     ImGui::SetNextItemWidth(input_width);
-    ImGui::InputText("##Gender", user_info->race, IM_ARRAYSIZE(user_info->race));
+    ImGui::InputText("##Gender", user_info->gender, IM_ARRAYSIZE(user_info->race));
     // race
     ImGui::Text("Race/Ethnicity:"); ImGui::SameLine(input_offset + 20);
     ImGui::SetNextItemWidth(input_width - 20);
