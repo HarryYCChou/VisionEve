@@ -271,9 +271,16 @@ void Client::render_camera_data() {
     ImGui::Text("/dev/video0");
     ImGui::Text("Right camera device: "); ImGui::SameLine();
     ImGui::Text("/dev/video2");
+
+    // flip control
+    ImGui::Checkbox("Video vertical flip", &cam_v_flip);
+    ImGui::Checkbox("Video horizontal flip", &cam_h_flip);
+
     // get image from camera
     // try camera L
     if (cam->get_image(0, image_buf) && (!image_buf.empty())) {
+      if (cam_v_flip) cv::flip(image_buf, image_buf, 0);
+      if (cam_h_flip) cv::flip(image_buf, image_buf, 1);
       load_texture(textureID_CamL, image_buf);
       ImGui::Image((void*)(intptr_t)textureID_CamL, ImVec2(400, 400));
     } else {
@@ -282,6 +289,8 @@ void Client::render_camera_data() {
     ImGui::SameLine();
     // try camera R
     if (cam->get_image(1, image_buf) && (!image_buf.empty())) {
+      if (cam_v_flip) cv::flip(image_buf, image_buf, 0);
+      if (cam_h_flip) cv::flip(image_buf, image_buf, 1);
       load_texture(textureID_CamR, image_buf);
       ImGui::Image((void*)(intptr_t)textureID_CamR, ImVec2(400, 400));
     } else {
