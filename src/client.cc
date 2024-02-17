@@ -173,6 +173,29 @@ void Client::render_all_user() {
     // update patient list
     update_all_user_info();
   }
+  ImGui::SameLine();
+
+  // export button
+  if (ImGui::Button("Export")) {
+    for (int i = 0; i < all_user.size(); i++) {
+      std::string f_name = "../export/" + std::to_string(all_user[i].id) + ".csv";
+      std::ofstream file(f_name, std::ios::out);
+      if (!file.is_open()) {
+        logger->error("Error open file - {}", f_name);
+        continue;
+      }
+      file << "ID," << all_user[i].id << std::endl;
+      file << "Age," << all_user[i].age << std::endl;
+      file << "Gender," << all_user[i].gender << std::endl;
+      file << "Race/Ethnicity," << all_user[i].race << std::endl;
+      file << "Eye Color," << all_user[i].eye_color << std::endl;
+      file << "Eye condition," << all_user[i].eye_condition << std::endl;
+      file << "Note," << all_user[i].user_note << std::endl;
+      file.close();
+    }
+
+    logger->info("Exporting files successfully.");
+  }
 
   ImGui::EndChild();
 }
