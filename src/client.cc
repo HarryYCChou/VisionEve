@@ -38,19 +38,25 @@ Client::Client(std::shared_ptr<spdlog::logger> l) {
   textureID_logo = load_texture("../test_data/logo/renewoptics_logo.png");
 
   // FIXME: camera class
+  glGenTextures(1, &textureID_L);
+  glGenTextures(1, &textureID_R);
   textureID_L = load_texture("../test_data/eye_images/eye-sample-l.png");
   textureID_R = load_texture("../test_data/eye_images/eye-sample-r.png");
 
   // FIXME: LBS class
+  glGenTextures(1, &textureID_LBS_L);
+  glGenTextures(1, &textureID_LBS_R);
+  glGenTextures(1, &textureID_LBS_VF_L);
+  glGenTextures(1, &textureID_LBS_VF_R);
   textureID_LBS_L = load_texture("../test_data/lbs_content/eye_chart/L.png");
   textureID_LBS_R = load_texture("../test_data/lbs_content/eye_chart/R.png");
   // for vertical flip
-  cv::Mat image = cv::imread("../test_data/lbs_content/eye_chart/L.png");
-  cv::flip(image, image, 0); 
-  load_texture(textureID_LBS_VF_L, image);
-  image = cv::imread("../test_data/lbs_content/eye_chart/R.png");
-  cv::flip(image, image, 0); 
-  load_texture(textureID_LBS_VF_R, image);
+  cv::Mat image_L = cv::imread("../test_data/lbs_content/eye_chart/L.png");
+  cv::flip(image_L, image_L, 0);
+  load_texture(textureID_LBS_VF_L, image_L);
+  cv::Mat image_R = cv::imread("../test_data/lbs_content/eye_chart/R.png");
+  cv::flip(image_R, image_R, 0);
+  load_texture(textureID_LBS_VF_R, image_R);
 
   // detect number of monitor
   Display* display = XOpenDisplay(nullptr);
@@ -279,9 +285,10 @@ void Client::render_camera_data() {
     // get image from camera
     // try camera L
     if (cam->get_image(0, image_buf) && (!image_buf.empty())) {
-      if (cam_v_flip) cv::flip(image_buf, image_buf, 0);
-      if (cam_h_flip) cv::flip(image_buf, image_buf, 1);
-      load_texture(textureID_CamL, image_buf);
+      cv::Mat image_cur = image_buf.clone();
+      if (cam_v_flip) cv::flip(image_cur, image_cur, 0);
+      if (cam_h_flip) cv::flip(image_cur, image_cur, 1);
+      load_texture(textureID_CamL, image_cur);
       ImGui::Image((void*)(intptr_t)textureID_CamL, ImVec2(400, 400));
     } else {
       ImGui::Image((void*)(intptr_t)textureID_L, ImVec2(400, 400));
@@ -289,9 +296,10 @@ void Client::render_camera_data() {
     ImGui::SameLine();
     // try camera R
     if (cam->get_image(1, image_buf) && (!image_buf.empty())) {
-      if (cam_v_flip) cv::flip(image_buf, image_buf, 0);
-      if (cam_h_flip) cv::flip(image_buf, image_buf, 1);
-      load_texture(textureID_CamR, image_buf);
+      cv::Mat image_cur = image_buf.clone();
+      if (cam_v_flip) cv::flip(image_cur, image_cur, 0);
+      if (cam_h_flip) cv::flip(image_cur, image_cur, 1);
+      load_texture(textureID_CamR, image_cur);
       ImGui::Image((void*)(intptr_t)textureID_CamR, ImVec2(400, 400));
     } else {
       ImGui::Image((void*)(intptr_t)textureID_R, ImVec2(400, 400));
@@ -379,10 +387,10 @@ void Client::render_side_panel() {
 
 void Client::render_lbs_content() {
     // if LBS doen not connected
-    if (n_of_monitor < 3) return;
+    //if (n_of_monitor < 3) return;
 
     // LBS content L
-    ImGui::SetNextWindowSize(ImVec2(1920, 0));
+    ImGui::SetNextWindowPos(ImVec2(1920, 0));
     ImGui::Begin("LBS_L", NULL, ImGuiWindowFlags_NoResize |
                                            ImGuiWindowFlags_NoTitleBar |
                                            ImGuiWindowFlags_NoMove);
@@ -394,7 +402,7 @@ void Client::render_lbs_content() {
     ImGui::End();
 
     // LBS content R
-    ImGui::SetNextWindowSize(ImVec2(3000, 0));
+    ImGui::SetNextWindowPos(ImVec2(3000, 0));
     ImGui::Begin("LBS_R", NULL, ImGuiWindowFlags_NoResize |
                                            ImGuiWindowFlags_NoTitleBar |
                                            ImGuiWindowFlags_NoMove);
