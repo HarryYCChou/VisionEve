@@ -19,6 +19,7 @@
 #include <cstring>
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <vector>
 #include <iomanip>
 // thread
@@ -86,6 +87,8 @@ class Client {
   void render_lbs_control();
   void render_side_panel();
   bool vertical_flip = true;
+  bool cam_v_flip = true;
+  bool cam_h_flip = true;
 
   // camera data
   GLuint textureID_L, textureID_R;
