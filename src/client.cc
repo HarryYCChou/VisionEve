@@ -153,7 +153,7 @@ void Client::render_all_user() {
   ImGui::SameLine();
 
   // load button
-  if (ImGui::Button("load/edit")) {
+  if (ImGui::Button("Load/Edit")) {
     // copy patient data to user_info
     if (all_user.size() > item_current_idx) {
       *user_info = all_user[item_current_idx];
@@ -167,7 +167,7 @@ void Client::render_all_user() {
   ImGui::SameLine();
 
   // delete button
-  if (ImGui::Button("delete")) {
+  if (ImGui::Button("Delete")) {
     db->del_user(all_user[item_current_idx].id);
 
     // update patient list
