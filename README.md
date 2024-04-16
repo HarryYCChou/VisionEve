@@ -17,3 +17,6 @@ cd build
 cmake ..
 make
 ```
+
+## Screen Shot
+![Screen Shot](https://github.com/HarryYCChou/VisionEve/blob/main/test_data/screen_shot/screen_shot.png)
